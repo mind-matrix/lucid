@@ -1,0 +1,20 @@
+---
+import "@mind-matrix/lucid-components";
+---
+
+<html>
+  <head>
+    <title>lucid — Astro</title>
+    <link rel="stylesheet" href="/node_modules/@mind-matrix/lucid-core/src/tokens.css" />
+  </head>
+  <body>
+    <lucid-button variant="primary">Hello from Astro</lucid-button>
+
+    <script>
+      import "@mind-matrix/lucid-components";
+      document
+        .querySelector("lucid-button")
+        ?.addEventListener("lucid-click", () => console.log("clicked"));
+    </script>
+  </body>
+</html>

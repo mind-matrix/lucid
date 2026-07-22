@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>lucid-button — fixture</title>
+    <link rel="stylesheet" href="../../../../core/src/tokens.css" />
+    <style>
+      body {
+        font-family: var(--lucid-font-family);
+        color: var(--lucid-color-fg);
+        background: var(--lucid-color-bg);
+        padding: var(--lucid-space-6);
+        display: grid;
+        gap: var(--lucid-space-4);
+      }
+      .row {
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: start;
+        gap: var(--lucid-space-3);
+      }
+      h2 {
+        font-size: var(--lucid-font-size-md);
+        color: var(--lucid-color-muted);
+        margin: 0;
+      }
+    </style>
+    <script type="module" src="../../index.ts"></script>
+  </head>
+  <body>
+    <h2>variants</h2>
+    <div class="row">
+      <lucid-button data-testid="btn-default">Default</lucid-button>
+      <lucid-button variant="primary" data-testid="btn-primary">Primary</lucid-button>
+      <lucid-button variant="ghost" data-testid="btn-ghost">Ghost</lucid-button>
+    </div>
+
+    <h2>states</h2>
+    <div class="row">
+      <lucid-button variant="primary" disabled data-testid="btn-disabled">Disabled</lucid-button>
+      <lucid-button variant="primary" data-testid="btn-focusable">Focusable</lucid-button>
+    </div>
+
+    <h2>with aria-label (icon-only case)</h2>
+    <div class="row">
+      <lucid-button variant="ghost" aria-label="Close dialog" data-testid="btn-icon">
+        ×
+      </lucid-button>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "@mind-matrix/lucid",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "bun run build.ts",
+    "build:landing": "bun run scripts/build-landing.ts",
+    "dev": "bun --hot apps/landing/index.ts",
+    "test": "bun test",
+    "typecheck": "tsc -b",
+    "size": "bun run scripts/size.ts",
+    "check:physical-css": "bun run scripts/check-physical-css.ts",
+    "test:a11y": "playwright test --config=playwright.config.ts",
+    "verify": "bun run typecheck && bun run check:physical-css && bun run test:a11y"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
+    "@types/bun": "latest",
+    "@types/react": "^18",
+    "typescript": "^5"
+  }
+}

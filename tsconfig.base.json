@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "allowJs": true,
+    "types": ["bun"],
+    "resolveJsonModule": true,
+
+    "jsx": "react-jsx",
+    "jsxImportSource": "@mind-matrix/lucid-core",
+
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    "paths": {
+      "@mind-matrix/lucid-core": ["./packages/core/src/index.ts"],
+      "@mind-matrix/lucid-core/jsx-runtime": ["./packages/core/src/jsx-runtime.ts"],
+      "@mind-matrix/lucid-core/jsx-dev-runtime": ["./packages/core/src/jsx-dev-runtime.ts"],
+      "@mind-matrix/lucid-components": ["./packages/components/src/index.ts"],
+      "@mind-matrix/lucid-react": ["./packages/react/src/index.ts"]
+    }
+  }
+}

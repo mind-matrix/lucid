@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "packages/*/src/**/*",
+    "apps/*/src/**/*",
+    "apps/*/*.ts",
+    "apps/*/*.tsx",
+    "types/**/*.d.ts",
+    "build.ts",
+    "scripts/**/*.ts",
+    "tests/**/*.ts",
+    "playwright.config.ts"
+  ],
+  "exclude": ["node_modules", "**/dist", "examples/**"]
+}

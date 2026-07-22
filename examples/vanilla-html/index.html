@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>lucid — vanilla HTML</title>
+    <link rel="stylesheet" href="../../packages/core/src/tokens.css" />
+    <script type="module">
+      import "@mind-matrix/lucid-components";
+    </script>
+  </head>
+  <body>
+    <lucid-button variant="primary">Click me</lucid-button>
+    <script>
+      document.querySelector("lucid-button").addEventListener("click", () => {
+        alert("clicked!");
+      });
+    </script>
+  </body>
+</html>
