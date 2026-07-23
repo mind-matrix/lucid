@@ -16,7 +16,8 @@ export abstract class LucidElement extends HTMLElement {
   static shadow: ShadowRootMode | false = "open";
 
   #root: ShadowRoot | this;
-  #rendered = false;
+  #renderedNode: Node | null = null;
+  #updateScheduled = false;
   #disposers: Array<() => void> = [];
 
   constructor() {
@@ -47,11 +48,26 @@ export abstract class LucidElement extends HTMLElement {
   }
 
   connectedCallback(): void {
-    if (!this.#rendered) {
-      this.#rendered = true;
-      const node = this.render();
-      this.#root.appendChild(node);
+    if (!this.#renderedNode) this.#doRender();
+  }
+
+  requestUpdate(): void {
+    if (this.#updateScheduled || !this.#renderedNode) return;
+    this.#updateScheduled = true;
+    queueMicrotask(() => {
+      this.#updateScheduled = false;
+      this.#doRender();
+    });
+  }
+
+  #doRender(): void {
+    const next = this.render();
+    if (this.#renderedNode && this.#renderedNode.parentNode === this.#root) {
+      (this.#root as Node).replaceChild(next, this.#renderedNode);
+    } else {
+      this.#root.appendChild(next);
     }
+    this.#renderedNode = next;
   }
 
   disconnectedCallback(): void {

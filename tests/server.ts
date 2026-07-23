@@ -1,4 +1,4 @@
-import button from "../packages/components/src/button/test/button.fixture.html";
+import button from "../packages/components/src/LucidButton/test/LucidButton.fixture.html";
 
 const server = Bun.serve({
   port: Number(process.env.PORT ?? 4174),

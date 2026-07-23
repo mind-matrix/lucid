@@ -91,6 +91,78 @@ test.describe("lucid-button — accessibility", () => {
     const iconBtn = page.locator("lucid-button[data-testid='btn-icon']");
     await expect(iconBtn).toHaveAttribute("aria-label", "Close dialog");
   });
+
+  test("setState(PENDING) sets aria-busy, disables click, exposes label", async ({ page }) => {
+    await page.goto("/button");
+    await page.waitForSelector("lucid-button[data-testid='btn-pending']");
+
+    const internal = page.locator("lucid-button[data-testid='btn-pending']").locator("button");
+    await expect(internal).toHaveAttribute("aria-busy", "true");
+    await expect(internal).toHaveAttribute("disabled", "");
+    await expect(internal).toHaveAttribute("data-state", "pending");
+
+    const spinnerLabel = await page.evaluate(() => {
+      const host = document.querySelector<HTMLElement>(
+        "lucid-button[data-testid='btn-pending']",
+      )!;
+      return host.shadowRoot!
+        .querySelector('[role="status"]')
+        ?.getAttribute("aria-label");
+    });
+    expect(spinnerLabel).toBe("Saving");
+
+    const clickCount = await page.evaluate(async () => {
+      const el = document.querySelector<HTMLElement>(
+        "lucid-button[data-testid='btn-pending']",
+      )!;
+      let n = 0;
+      el.addEventListener("click", () => n++);
+      el.click();
+      return n;
+    });
+    expect(clickCount).toBe(0);
+  });
+
+  test("setState(ERROR) sets aria-invalid and data-state=error", async ({ page }) => {
+    await page.goto("/button");
+    const internal = page.locator("lucid-button[data-testid='btn-error']").locator("button");
+    await expect(internal).toHaveAttribute("aria-invalid", "true");
+    await expect(internal).toHaveAttribute("data-state", "error");
+  });
+
+  test("setState(SUCCESS) exposes data-state=success", async ({ page }) => {
+    await page.goto("/button");
+    const internal = page.locator("lucid-button[data-testid='btn-success']").locator("button");
+    await expect(internal).toHaveAttribute("data-state", "success");
+  });
+
+  test("setState transitions re-render the button on the fly", async ({ page }) => {
+    await page.goto("/button");
+    await page.waitForSelector("lucid-button[data-testid='btn-primary']");
+
+    const stateSequence = await page.evaluate(async () => {
+      const el = document.querySelector<any>("lucid-button[data-testid='btn-primary']")!;
+      const observed: string[] = [];
+      const settle = () => new Promise((r) => queueMicrotask(() => r(null)));
+      const read = () =>
+        observed.push(
+          el.shadowRoot.querySelector("button").getAttribute("data-state") ?? "",
+        );
+
+      el.setState("pending");
+      await settle();
+      read();
+      el.setState("success");
+      await settle();
+      read();
+      el.setState("idle");
+      await settle();
+      read();
+      return observed;
+    });
+
+    expect(stateSequence).toEqual(["pending", "success", "idle"]);
+  });
 });
 
 function formatViolations(v: unknown[]): string {

@@ -13,15 +13,17 @@ for (const dir of DIRS) {
     });
 
     test(`full page snapshot — ${dir}`, async ({ page }) => {
-      await expect(page).toHaveScreenshot(`button-page-${dir}.png`, {
+      await expect(page).toHaveScreenshot(`LucidButton-page-${dir}.png`, {
         maxDiffPixelRatio: 0.01,
+        animations: "disabled",
       });
     });
 
     test(`primary button — ${dir}`, async ({ page }) => {
       const btn = page.locator("lucid-button[data-testid='btn-primary']");
-      await expect(btn).toHaveScreenshot(`button-primary-${dir}.png`, {
+      await expect(btn).toHaveScreenshot(`LucidButton-primary-${dir}.png`, {
         maxDiffPixelRatio: 0.01,
+        animations: "disabled",
       });
     });
   });
