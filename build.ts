@@ -31,22 +31,24 @@ for (const t of targets) {
   const outdir = join(t.dir, "dist");
   await rm(outdir, { recursive: true, force: true });
 
-  const result = await Bun.build({
-    root: join(t.dir, "src"),
-    entrypoints: t.entrypoints.map((e) => join(t.dir, e)),
-    outdir,
-    target: "browser",
-    format: "esm",
-    splitting: false,
-    minify: true,
-    sourcemap: "linked",
-    external: "external" in t ? [...t.external] : [],
-  });
+  for (const entry of t.entrypoints) {
+    const result = await Bun.build({
+      root: join(t.dir, "src"),
+      entrypoints: [join(t.dir, entry)],
+      outdir,
+      target: "browser",
+      format: "esm",
+      splitting: false,
+      minify: true,
+      sourcemap: "linked",
+      external: "external" in t ? [...t.external] : [],
+    });
 
-  if (!result.success) {
-    console.error(`[build] ${t.name} failed`);
-    for (const log of result.logs) console.error(log);
-    process.exit(1);
+    if (!result.success) {
+      console.error(`[build] ${t.name} (${entry}) failed`);
+      for (const log of result.logs) console.error(log);
+      process.exit(1);
+    }
   }
   console.log(`[build] ${t.name} → ${outdir}`);
 }

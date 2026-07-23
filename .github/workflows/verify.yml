@@ -9,6 +9,9 @@ concurrency:
   group: verify-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -42,7 +45,22 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Accessibility + visual regression
+        # `updateSnapshots: "missing"` in playwright.config.ts lets baselines
+        # self-bootstrap the first time a test runs in a new OS/browser combo
+        # (e.g. chromium-linux on GH runners). Existing baselines are compared
+        # strictly.
         run: bunx playwright test
+
+      - name: Commit generated Linux baselines
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add packages/components/src/**/__snapshots__/*-chromium-linux.png || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(visual): bootstrap Linux baselines [skip ci]"
+            git push
+          fi
 
       - name: Upload Playwright report
         if: always()
