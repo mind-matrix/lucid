@@ -1,6 +1,26 @@
 {
   "name": "@mind-matrix/lucid-react",
   "version": "0.0.1",
+  "description": "React 17/18 interop helpers for Lucid components. Provides createComponent() for binding custom-event-only components into JSX. Not needed for React 19 or components that dispatch native DOM events.",
+  "license": "MIT",
+  "homepage": "https://mind-matrix.github.io/lucid",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mind-matrix/lucid.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/mind-matrix/lucid/issues"
+  },
+  "keywords": [
+    "lucid",
+    "react",
+    "web-components",
+    "custom-elements",
+    "createComponent",
+    "interop"
+  ],
+  "author": "Sagnik Modak",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",

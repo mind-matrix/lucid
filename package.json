@@ -18,6 +18,8 @@
     "check:physical-css": "bun run scripts/check-physical-css.ts",
     "lint": "biome lint",
     "lint:fix": "biome lint --write",
+    "release": "bun run scripts/release.ts",
+    "release:dry": "bun run scripts/release.ts --dry-run",
     "test:a11y": "playwright test --config=playwright.config.ts",
     "verify": "bun run typecheck && bun run check:physical-css && bun run lint && bun run test:a11y"
   },

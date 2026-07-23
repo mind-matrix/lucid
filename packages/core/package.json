@@ -1,6 +1,30 @@
 {
   "name": "@mind-matrix/lucid-core",
   "version": "0.0.1",
+  "description": "Runtime primitives for Lucid: LucidElement base class, JSX runtime, signals, css helper, roving-list controller, and design tokens.",
+  "license": "MIT",
+  "homepage": "https://mind-matrix.github.io/lucid",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mind-matrix/lucid.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/mind-matrix/lucid/issues"
+  },
+  "keywords": [
+    "lucid",
+    "web-components",
+    "custom-elements",
+    "shadow-dom",
+    "jsx",
+    "design-system",
+    "accessibility",
+    "a11y",
+    "i18n",
+    "framework-agnostic"
+  ],
+  "author": "Sagnik Modak",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",

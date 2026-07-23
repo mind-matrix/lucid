@@ -1,6 +1,35 @@
 {
   "name": "@mind-matrix/lucid-components",
   "version": "0.0.1",
+  "description": "Framework-agnostic UI components built on Web Components. Accessibility-first (WCAG 2.1 AA) and internationalization-ready. Works in React, Vue, Angular, Astro, Svelte, and vanilla HTML.",
+  "license": "MIT",
+  "homepage": "https://mind-matrix.github.io/lucid",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mind-matrix/lucid.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/mind-matrix/lucid/issues"
+  },
+  "keywords": [
+    "lucid",
+    "web-components",
+    "custom-elements",
+    "shadow-dom",
+    "design-system",
+    "component-library",
+    "accessibility",
+    "a11y",
+    "i18n",
+    "wcag",
+    "button",
+    "card",
+    "nav",
+    "tabs",
+    "framework-agnostic"
+  ],
+  "author": "Sagnik Modak",
   "type": "module",
   "sideEffects": ["./src/**/*.ts", "./dist/**/*.js"],
   "main": "./dist/index.js",
