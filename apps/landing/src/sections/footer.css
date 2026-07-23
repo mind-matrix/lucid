@@ -1,8 +1,0 @@
-.footer {
-  border-top: 1px solid var(--lucid-color-border);
-  padding: var(--lucid-space-6);
-  display: grid;
-  justify-items: center;
-  color: var(--lucid-color-muted);
-  font-size: var(--lucid-font-size-sm);
-}

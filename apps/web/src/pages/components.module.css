@@ -1,0 +1,65 @@
+.pageHeader {
+  padding-block: var(--lucid-space-8) var(--lucid-space-4);
+}
+
+.pageHeader h1 {
+  font-size: var(--lucid-font-size-2xl);
+  font-weight: var(--lucid-font-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+.pageHeaderLede {
+  color: var(--lucid-color-fg-body);
+  font-size: var(--lucid-font-size-lg);
+  max-inline-size: 640px;
+  margin-block-start: var(--lucid-space-2);
+}
+
+.prose h2 {
+  font-size: var(--lucid-font-size-xl);
+  font-weight: var(--lucid-font-weight-semibold);
+  letter-spacing: -0.01em;
+  margin-block: var(--lucid-space-6) var(--lucid-space-3);
+}
+
+.prose h2:first-child {
+  margin-block-start: 0;
+}
+
+.prose p {
+  color: var(--lucid-color-fg-body);
+  max-inline-size: 720px;
+  margin-block-end: var(--lucid-space-3);
+}
+
+.demoRow {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  gap: var(--lucid-space-3);
+  align-items: center;
+  margin-block-end: var(--lucid-space-4);
+}
+
+.demoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--lucid-space-4);
+  margin-block-end: var(--lucid-space-4);
+}
+
+.demoBlock {
+  margin-block-end: var(--lucid-space-4);
+}
+
+.proseCode {
+  display: block;
+  font-family: var(--lucid-font-mono);
+  font-size: var(--lucid-font-size-md);
+  background: var(--lucid-color-surface-subtle);
+  padding: var(--lucid-space-4);
+  border-radius: var(--lucid-radius-md);
+  overflow-x: auto;
+  max-inline-size: 720px;
+  white-space: pre-wrap;
+}

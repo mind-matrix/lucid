@@ -1,0 +1,90 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-tab> — one tab button in a lucid-tabs tablist.
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-tab-padding-block: var(--lucid-space-3);
+  --lucid-tab-padding-inline: var(--lucid-space-4);
+  --lucid-tab-color: var(--lucid-color-fg-body);
+  --lucid-tab-color-hover: var(--lucid-color-fg);
+  --lucid-tab-color-selected: var(--lucid-color-primary);
+  --lucid-tab-underline-height: var(--lucid-border-width-md);
+  --lucid-tab-underline-color: var(--lucid-color-primary);
+  --lucid-tab-transition-duration: var(--lucid-btn-transition-duration, 120ms);
+
+  display: inline-block;
+  font-family: var(--lucid-font-family);
+}
+
+/* Vertical tabs stretch to fill the tablist column so their selection
+ * indicator (a vertical bar on the inline-end edge) aligns with the
+ * tablist's border. data-orientation is propagated by <lucid-tabs>. */
+:host([data-orientation="vertical"]) {
+  display: block;
+}
+
+:host([data-orientation="vertical"]) [part="control"] {
+  justify-content: start;
+  inline-size: 100%;
+}
+
+[part="control"] {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-grid;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--lucid-tab-padding-block);
+  padding-inline: var(--lucid-tab-padding-inline);
+  color: var(--lucid-tab-color);
+  font-size: var(--lucid-font-size-md);
+  font-weight: var(--lucid-font-weight-medium);
+  transition: color var(--lucid-tab-transition-duration);
+  position: relative;
+  user-select: none;
+}
+
+[part="control"]:focus {
+  outline: none;
+}
+
+[part="control"]:focus-visible {
+  outline: var(--lucid-outline-width) solid var(--lucid-color-primary);
+  outline-offset: calc(var(--lucid-outline-offset) * -1);
+  border-radius: var(--lucid-radius-sm);
+}
+
+[part="control"]:hover {
+  color: var(--lucid-tab-color-hover);
+}
+
+:host([selected]) [part="control"] {
+  color: var(--lucid-tab-color-selected);
+}
+
+:host([selected]) [part="control"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: var(--lucid-tab-underline-height);
+  background: var(--lucid-tab-underline-color);
+}
+
+/* Vertical: indicator moves to the inline-end edge (the tablist's border) */
+:host([data-orientation="vertical"][selected]) [part="control"]::after {
+  inset-inline: auto 0;
+  inset-block: 0;
+  block-size: auto;
+  inline-size: var(--lucid-tab-underline-height);
+}
+
+[part="control"][aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--lucid-opacity-disabled);
+}
+
+:host([hidden]) {
+  display: none;
+}

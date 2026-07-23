@@ -1,0 +1,14 @@
+:host {
+  --lucid-tab-panel-padding-block: var(--lucid-space-4);
+  --lucid-tab-panel-padding-inline: 0;
+
+  display: block;
+  font-family: var(--lucid-font-family);
+  color: var(--lucid-color-fg);
+  padding-block: var(--lucid-tab-panel-padding-block);
+  padding-inline: var(--lucid-tab-panel-padding-inline);
+}
+
+:host([hidden]) {
+  display: none;
+}

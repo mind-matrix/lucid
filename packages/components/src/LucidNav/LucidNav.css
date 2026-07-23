@@ -1,0 +1,36 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-nav> — component-local variables
+ *
+ * A navigation landmark: a horizontal or vertical row/column of links.
+ * Layout only — link styling lives in LucidNavLink.
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-nav-gap: var(--lucid-space-3);
+  --lucid-nav-padding-block: var(--lucid-space-2);
+  --lucid-nav-padding-inline: 0;
+
+  display: block;
+  font-family: var(--lucid-font-family);
+  color: var(--lucid-color-fg);
+}
+
+nav {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: center;
+  gap: var(--lucid-nav-gap);
+  padding-block: var(--lucid-nav-padding-block);
+  padding-inline: var(--lucid-nav-padding-inline);
+}
+
+:host([orientation="vertical"]) nav {
+  grid-auto-flow: row;
+  justify-content: unset;
+  justify-items: start;
+}
+
+:host([hidden]) {
+  display: none;
+}

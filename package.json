@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "build": "bun run build.ts",
-    "build:landing": "bun run scripts/build-landing.ts",
-    "dev": "bun --hot apps/landing/index.ts",
+    "build:web": "bun run build && bun run scripts/bundle-size.ts --write && cd apps/web && bun --bun astro build",
+    "dev": "cd apps/web && bun --bun astro dev",
     "test": "bun test",
     "typecheck": "tsc -b",
     "bundle-size": "bun run scripts/bundle-size.ts --report",

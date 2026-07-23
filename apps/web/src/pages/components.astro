@@ -1,0 +1,161 @@
+---
+import Base from "../layouts/Base.astro";
+import styles from "./components.module.css";
+import { MousePointerClick, Ban } from "lucide";
+import { iconToSvg } from "../lib/icon";
+---
+
+<Base
+  title="Components — Lucid"
+  description="Live examples of every component shipped by Lucid."
+>
+  <div class={styles.pageHeader}>
+    <h1>Components</h1>
+    <p class={styles.pageHeaderLede}>
+      Every component ships as a native custom element. Click a tab to see
+      variants, states, and how to invoke it.
+    </p>
+  </div>
+
+  <lucid-tabs label="Components" value="button" orientation="vertical">
+    <lucid-tab slot="tab" value="button">Button</lucid-tab>
+    <lucid-tab slot="tab" value="card">Card</lucid-tab>
+    <lucid-tab slot="tab" value="nav">Nav</lucid-tab>
+    <lucid-tab slot="tab" value="tabs">Tabs</lucid-tab>
+
+    <!-- Button -->
+    <lucid-tab-panel value="button" class={styles.prose}>
+      <h2>Variants</h2>
+      <div class={styles.demoRow}>
+        <lucid-button>Default</lucid-button>
+        <lucid-button variant="primary">Primary</lucid-button>
+        <lucid-button variant="ghost">Ghost</lucid-button>
+      </div>
+
+      <h2>States</h2>
+      <div class={styles.demoRow}>
+        <lucid-button variant="primary" disabled>Disabled</lucid-button>
+        <lucid-button variant="primary" aria-label="Close dialog">×</lucid-button>
+      </div>
+
+      <h2>As a link (polymorphic)</h2>
+      <div class={styles.demoRow}>
+        <lucid-button variant="ghost" href="/docs">In-app link</lucid-button>
+        <lucid-button
+          variant="ghost"
+          href="https://example.com"
+          target="_blank"
+        >
+          External link
+        </lucid-button>
+      </div>
+
+      <pre class={styles.proseCode}>{`<lucid-button variant="primary">Save</lucid-button>
+<lucid-button variant="ghost" href="/docs">Docs</lucid-button>`}</pre>
+    </lucid-tab-panel>
+
+    <!-- Card -->
+    <lucid-tab-panel value="card" class={styles.prose}>
+      <h2>Variants</h2>
+      <div class={styles.demoGrid}>
+        <lucid-card>
+          <h3 slot="title">Default</h3>
+          <p>Outlined with a thin border. Great inside another elevated container.</p>
+        </lucid-card>
+        <lucid-card variant="filled">
+          <h3 slot="title">Filled</h3>
+          <p>Subtle tinted background. Use for grouped groups of content.</p>
+        </lucid-card>
+        <lucid-card variant="elevated">
+          <h3 slot="title">Elevated</h3>
+          <p>Raised with a soft shadow. Best on plain page backgrounds.</p>
+        </lucid-card>
+      </div>
+
+      <h2>Clickable (interactive)</h2>
+      <div class={styles.demoGrid}>
+        <lucid-card clickable variant="elevated">
+          <div slot="icon" aria-hidden="true" set:html={iconToSvg(MousePointerClick)} />
+          <h3 slot="title">Tab-select this card</h3>
+          <p>Focusable via Tab. Enter or Space activates.</p>
+        </lucid-card>
+        <lucid-card clickable disabled variant="elevated">
+          <div slot="icon" aria-hidden="true" set:html={iconToSvg(Ban)} />
+          <h3 slot="title">Disabled</h3>
+          <p>Focusable via aria-disabled, but click is suppressed.</p>
+        </lucid-card>
+      </div>
+
+      <pre class={styles.proseCode}>{`<lucid-card variant="elevated" clickable>
+  <div slot="icon" aria-hidden="true">◇</div>
+  <h3 slot="title">Card title</h3>
+  <p>Card body content.</p>
+</lucid-card>`}</pre>
+    </lucid-tab-panel>
+
+    <!-- Nav -->
+    <lucid-tab-panel value="nav" class={styles.prose}>
+      <h2>Horizontal</h2>
+      <div class={styles.demoBlock}>
+        <lucid-nav label="Example horizontal">
+          <lucid-nav-link href="#" active>Home</lucid-nav-link>
+          <lucid-nav-link href="#">Docs</lucid-nav-link>
+          <lucid-nav-link href="#">Components</lucid-nav-link>
+          <lucid-nav-link href="#" disabled>Coming Soon</lucid-nav-link>
+        </lucid-nav>
+      </div>
+
+      <h2>Vertical (sidebar-style)</h2>
+      <div class={styles.demoBlock}>
+        <lucid-nav orientation="vertical" label="Example vertical">
+          <lucid-nav-link href="#">Getting Started</lucid-nav-link>
+          <lucid-nav-link href="#" active>Components</lucid-nav-link>
+          <lucid-nav-link href="#">Tokens</lucid-nav-link>
+        </lucid-nav>
+      </div>
+
+      <pre class={styles.proseCode}>{`<lucid-nav label="Primary">
+  <lucid-nav-link href="/">Home</lucid-nav-link>
+  <lucid-nav-link href="/docs" active>Docs</lucid-nav-link>
+</lucid-nav>`}</pre>
+    </lucid-tab-panel>
+
+    <!-- Tabs -->
+    <lucid-tab-panel value="tabs" class={styles.prose}>
+      <h2>Automatic activation (default)</h2>
+      <p>Arrow keys move focus and select. Fastest UX for cheap panels.</p>
+      <div class={styles.demoBlock}>
+        <lucid-tabs label="Example automatic" value="one">
+          <lucid-tab slot="tab" value="one">One</lucid-tab>
+          <lucid-tab slot="tab" value="two">Two</lucid-tab>
+          <lucid-tab slot="tab" value="three">Three</lucid-tab>
+          <lucid-tab-panel value="one">Panel one</lucid-tab-panel>
+          <lucid-tab-panel value="two">Panel two</lucid-tab-panel>
+          <lucid-tab-panel value="three">Panel three</lucid-tab-panel>
+        </lucid-tabs>
+      </div>
+
+      <h2>Manual activation</h2>
+      <p>Arrow keys move focus only. User presses Enter or Space to select. Better for expensive panels.</p>
+      <div class={styles.demoBlock}>
+        <lucid-tabs
+          label="Example manual"
+          activation="manual"
+          value="alpha"
+        >
+          <lucid-tab slot="tab" value="alpha">Alpha</lucid-tab>
+          <lucid-tab slot="tab" value="beta">Beta</lucid-tab>
+          <lucid-tab-panel value="alpha">Alpha panel</lucid-tab-panel>
+          <lucid-tab-panel value="beta">Beta panel</lucid-tab-panel>
+        </lucid-tabs>
+      </div>
+
+      <pre class={styles.proseCode}>{`<lucid-tabs label="Docs sections" value="intro">
+  <lucid-tab slot="tab" value="intro">Introduction</lucid-tab>
+  <lucid-tab slot="tab" value="install">Installation</lucid-tab>
+  <lucid-tab-panel value="intro">…</lucid-tab-panel>
+  <lucid-tab-panel value="install">…</lucid-tab-panel>
+</lucid-tabs>`}</pre>
+    </lucid-tab-panel>
+  </lucid-tabs>
+</Base>

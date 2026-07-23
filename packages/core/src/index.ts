@@ -1,6 +1,7 @@
 import * as signalMod from "./signal.ts";
 import * as cssMod from "./css.ts";
 import * as elementMod from "./element.ts";
+import * as rovingListMod from "./roving-list.ts";
 import * as jsxMod from "./jsx-runtime.ts";
 
 export const {
@@ -22,6 +23,10 @@ export const {
 } = elementMod;
 
 export const {
+  LucidRovingList,
+} = rovingListMod;
+
+export const {
   jsx,
   jsxs,
   Fragment,
@@ -30,4 +35,5 @@ export const {
 export type { Signal } from "./signal.ts";
 export type { CSSResult } from "./css.ts";
 export type { ElementOptions, PropDef, PropType } from "./element.ts";
+export type { RovingOrientation, RovingListOptions } from "./roving-list.ts";
 export type { JSX, Child, Props } from "./jsx-runtime.ts";

@@ -1,4 +1,4 @@
-name: Deploy landing to GitHub Pages
+name: Deploy web to GitHub Pages
 
 on:
   push:
@@ -27,25 +27,22 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build packages
-        run: bun run build
-
       - name: Detect base path
         id: base
         run: |
           repo="${GITHUB_REPOSITORY##*/}"
           echo "path=/${repo}/" >> "$GITHUB_OUTPUT"
 
-      - name: Build landing site
+      - name: Build web (packages + bundle-size + astro)
         env:
           BASE_PATH: ${{ steps.base.outputs.path }}
-        run: bun run build:landing
+        run: bun run build:web
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/landing
+          path: apps/web/dist
 
   deploy:
     needs: build

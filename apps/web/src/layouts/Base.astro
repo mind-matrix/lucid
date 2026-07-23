@@ -1,0 +1,77 @@
+---
+/**
+ * Base layout — every page uses this.
+ *
+ * Determines the active nav link from Astro.url.pathname so that
+ * navigation state is pre-rendered per page (no client-side JS
+ * needed to sync `active` on route change).
+ */
+import "@mind-matrix/lucid-core/tokens.css";
+import "../styles/reset.css";
+import "../styles/global.css";
+import styles from "./base.module.css";
+
+type Props = { title?: string; description?: string };
+const {
+  title = "Lucid",
+  description = "Web Components Framework",
+} = Astro.props;
+
+// Strip the site's base path off the pathname so we can compare route
+// keys uniformly regardless of `astro.config.mjs` `base` setting.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const rawPath = Astro.url.pathname;
+const path = (
+  rawPath.startsWith(base) ? rawPath.slice(base.length) : rawPath
+).replace(/\/$/, "") || "/";
+
+const NAV = [
+  { href: "/", label: "Home" },
+  { href: "/docs", label: "Docs" },
+  { href: "/components", label: "Components" },
+] as const;
+
+const withBase = (href: string) =>
+  href === "/" ? `${base}/` : `${base}${href}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <header class={styles.topbar}>
+      <a class={styles.topbarBrand} href={withBase("/")}>
+        <span class={styles.topbarWordmark}>Lucid</span>
+      </a>
+      <lucid-nav label="Primary">
+        {
+          NAV.map((item) => (
+            <lucid-nav-link
+              href={withBase(item.href)}
+              active={path === item.href ? "" : undefined}
+            >
+              {item.label}
+            </lucid-nav-link>
+          ))
+        }
+      </lucid-nav>
+    </header>
+
+    <main class={styles.page}>
+      <slot />
+    </main>
+
+    <footer class={styles.siteFooter}>Built with Lucid · MIT</footer>
+
+    <script>
+      // Register every custom element for the whole site once.
+      // Astro serves this as a module; each page loads the same bundle.
+      import "@mind-matrix/lucid-components";
+    </script>
+  </body>
+</html>

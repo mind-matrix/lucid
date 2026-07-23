@@ -1,0 +1,66 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-nav-link> — component-local variables
+ *
+ * Renders an <a> in shadow DOM styled as a nav item. Active state
+ * comes from the [active] host attribute (mirrored as aria-current
+ * on the internal anchor for screen readers).
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-nav-link-padding-block: var(--lucid-space-2);
+  --lucid-nav-link-padding-inline: var(--lucid-space-3);
+  --lucid-nav-link-radius: var(--lucid-radius-md);
+  --lucid-nav-link-color: var(--lucid-color-fg-body);
+  --lucid-nav-link-color-hover: var(--lucid-color-fg);
+  --lucid-nav-link-color-active: var(--lucid-color-primary);
+  --lucid-nav-link-bg-hover: var(--lucid-color-surface-subtle-hover);
+  --lucid-nav-link-bg-active: var(--lucid-color-surface-subtle);
+  --lucid-nav-link-underline-height: var(--lucid-border-width-md);
+  --lucid-nav-link-transition-duration: var(--lucid-btn-transition-duration, 120ms);
+
+  display: inline-block;
+  font-family: var(--lucid-font-family);
+}
+
+a[part="control"] {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: var(--lucid-space-2);
+  padding-block: var(--lucid-nav-link-padding-block);
+  padding-inline: var(--lucid-nav-link-padding-inline);
+  border-radius: var(--lucid-nav-link-radius);
+  color: var(--lucid-nav-link-color);
+  font-size: var(--lucid-font-size-md);
+  font-weight: var(--lucid-font-weight-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--lucid-nav-link-transition-duration),
+    color var(--lucid-nav-link-transition-duration);
+}
+
+a[part="control"]:focus {
+  outline: none;
+}
+
+a[part="control"]:focus-visible {
+  outline: var(--lucid-outline-width) solid var(--lucid-color-primary);
+  outline-offset: var(--lucid-outline-offset);
+}
+
+a[part="control"]:hover {
+  color: var(--lucid-nav-link-color-hover);
+  background: var(--lucid-nav-link-bg-hover);
+}
+
+:host([active]) a[part="control"] {
+  color: var(--lucid-nav-link-color-active);
+  background: var(--lucid-nav-link-bg-active);
+}
+
+:host([hidden]) {
+  display: none;
+}

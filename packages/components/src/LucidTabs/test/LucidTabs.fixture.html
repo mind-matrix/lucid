@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>lucid-tabs — fixture</title>
+    <link rel="stylesheet" href="../../../../core/src/tokens.css" />
+    <style>
+      body {
+        font-family: var(--lucid-font-family);
+        color: var(--lucid-color-fg);
+        background: var(--lucid-color-bg);
+        padding: var(--lucid-space-6);
+        display: grid;
+        gap: var(--lucid-space-6);
+      }
+      h2 {
+        font-size: var(--lucid-font-size-md);
+        color: var(--lucid-color-muted);
+        margin: 0;
+      }
+    </style>
+    <script type="module" src="./LucidTabs.fixture.ts"></script>
+  </head>
+  <body>
+    <h2>tabs — automatic activation (default)</h2>
+    <lucid-tabs label="Documentation" data-testid="tabs-auto">
+      <lucid-tab slot="tab" value="overview" data-testid="tab-overview">Overview</lucid-tab>
+      <lucid-tab slot="tab" value="usage" data-testid="tab-usage">Usage</lucid-tab>
+      <lucid-tab slot="tab" value="api" data-testid="tab-api">API</lucid-tab>
+      <lucid-tab-panel value="overview" data-testid="panel-overview">
+        <p>Overview content goes here.</p>
+      </lucid-tab-panel>
+      <lucid-tab-panel value="usage" data-testid="panel-usage">
+        <p>Usage content goes here.</p>
+      </lucid-tab-panel>
+      <lucid-tab-panel value="api" data-testid="panel-api">
+        <p>API content goes here.</p>
+      </lucid-tab-panel>
+    </lucid-tabs>
+
+    <h2>tabs — manual activation</h2>
+    <lucid-tabs
+      label="Manual"
+      activation="manual"
+      value="two"
+      data-testid="tabs-manual"
+    >
+      <lucid-tab slot="tab" value="one" data-testid="tab-one">One</lucid-tab>
+      <lucid-tab slot="tab" value="two" data-testid="tab-two">Two</lucid-tab>
+      <lucid-tab slot="tab" value="three" data-testid="tab-three">Three</lucid-tab>
+      <lucid-tab-panel value="one">One panel</lucid-tab-panel>
+      <lucid-tab-panel value="two">Two panel</lucid-tab-panel>
+      <lucid-tab-panel value="three">Three panel</lucid-tab-panel>
+    </lucid-tabs>
+
+    <h2>tabs — disabled tab</h2>
+    <lucid-tabs label="With disabled" data-testid="tabs-disabled">
+      <lucid-tab slot="tab" value="a" data-testid="tab-a">A</lucid-tab>
+      <lucid-tab slot="tab" value="b" disabled data-testid="tab-b">B (disabled)</lucid-tab>
+      <lucid-tab slot="tab" value="c" data-testid="tab-c">C</lucid-tab>
+      <lucid-tab-panel value="a">A panel</lucid-tab-panel>
+      <lucid-tab-panel value="b">B panel</lucid-tab-panel>
+      <lucid-tab-panel value="c">C panel</lucid-tab-panel>
+    </lucid-tabs>
+  </body>
+</html>

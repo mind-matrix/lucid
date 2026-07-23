@@ -5,7 +5,7 @@
  *      showing raw, gzip, and brotli bytes across every built package.
  *
  *   2. The landing site's generated module
- *      (`apps/landing/src/generated/bundle-size.ts`), consumed by the
+ *      (`apps/web/src/generated/bundle-size.ts`), consumed by the
  *      features section so the "X KB gzipped" copy is always current.
  *
  * Modes (mutually inclusive — omit both to run everything):
@@ -165,7 +165,7 @@ export const bundleSize: BundleSizeReport = {
 };
 `;
 
-  const outPath = join(ROOT, "apps/landing/src/generated/bundle-size.ts");
+  const outPath = join(ROOT, "apps/web/src/generated/bundle-size.ts");
   await Bun.write(outPath, output);
 
   console.log(

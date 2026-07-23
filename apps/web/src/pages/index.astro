@@ -1,0 +1,99 @@
+---
+import Base from "../layouts/Base.astro";
+import { bundleSize } from "../generated/bundle-size";
+import styles from "./home.module.css";
+import {
+  Blocks,
+  Boxes,
+  Feather,
+  Package,
+  Shield,
+  Zap,
+  type IconNode,
+} from "lucide";
+import { iconToSvg } from "../lib/icon";
+
+const SIZE = bundleSize.componentsAndRuntimeGzip.formatted;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+type Feature = { icon: IconNode; title: string; body: string };
+const FEATURES: Feature[] = [
+  {
+    icon: Boxes,
+    title: "Framework-agnostic",
+    body:
+      "Web Components render natively in React, Vue, Angular, Astro, Svelte, and vanilla HTML.",
+  },
+  {
+    icon: Shield,
+    title: "Style-isolated",
+    body:
+      "Shadow DOM guarantees your CSS can't leak out and outer CSS can't leak in. Theme via CSS custom properties.",
+  },
+  {
+    icon: Zap,
+    title: "No Virtual DOM",
+    body:
+      "JSX compiles straight to document.createElement. Signals wire reactivity in place.",
+  },
+  {
+    icon: Feather,
+    title: `${SIZE} gzipped`,
+    body: `The runtime and every shipped component combined — measured live at build time, currently ${SIZE} over the wire.`,
+  },
+  {
+    icon: Package,
+    title: "Bun-native",
+    body:
+      "Ships as ESM. Built, tested, and served with Bun — no webpack, no Vite in the library, no bundler config.",
+  },
+  {
+    icon: Blocks,
+    title: "Rust-compatible",
+    body:
+      "WASM apps consume lucid components through standard JS interop. Same DOM API, no bridge.",
+  },
+];
+---
+
+<Base title="Lucid - Web Components Framework">
+  <section class={styles.hero} role="banner">
+    <span class={styles.heroEyebrow}>@mind-matrix/lucid</span>
+    <h1 class={styles.heroTitle}>
+      One component library.<br />
+      <span class={styles.heroTitleAccent}>Every framework.</span>
+    </h1>
+    <p class={styles.heroSubtitle}>
+      Tiny, framework-agnostic UI primitives built on Web Components. Drop them
+      into React, Vue, Angular, Astro, Svelte, or vanilla HTML — no wrappers,
+      no runtime, no lock-in.
+    </p>
+    <div class={styles.heroCtas}>
+      <lucid-button variant="primary" href={`${base}/docs`}>
+        Get started
+      </lucid-button>
+      <lucid-button
+        variant="ghost"
+        href="https://github.com/mind-matrix/lucid"
+        target="_blank"
+      >
+        GitHub
+      </lucid-button>
+    </div>
+  </section>
+
+  <section class={styles.features} aria-labelledby="features-heading">
+    <h2 class={styles.featuresTitle} id="features-heading">Built for interop</h2>
+    <div class={styles.featuresGrid}>
+      {
+        FEATURES.map((f) => (
+          <lucid-card variant="elevated">
+            <div slot="icon" aria-hidden="true" set:html={iconToSvg(f.icon)} />
+            <h3 slot="title">{f.title}</h3>
+            <p>{f.body}</p>
+          </lucid-card>
+        ))
+      }
+    </div>
+  </section>
+</Base>

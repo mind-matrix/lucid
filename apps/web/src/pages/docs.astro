@@ -1,0 +1,104 @@
+---
+import Base from "../layouts/Base.astro";
+import styles from "./docs.module.css";
+---
+
+<Base title="Docs — Lucid" description="Introduction and installation for Lucid.">
+  <div class={styles.pageHeader}>
+    <h1>Docs</h1>
+    <p class={styles.pageHeaderLede}>
+      Everything you need to install Lucid and understand how it composes with
+      the rest of your stack.
+    </p>
+  </div>
+
+  <lucid-tabs label="Docs sections" value="introduction" orientation="vertical">
+    <lucid-tab slot="tab" value="introduction">Introduction</lucid-tab>
+    <lucid-tab slot="tab" value="installation">Installation</lucid-tab>
+
+    <lucid-tab-panel value="introduction" class={styles.prose}>
+      <h2>What Lucid is</h2>
+      <p>
+        Lucid is a design system distributed as Web Components. Every component
+        is a native custom element that any framework — or plain HTML — can
+        render without wrappers or hydration. Behind the scenes, each component
+        uses Shadow DOM for style isolation and CSS custom properties for
+        theming.
+      </p>
+
+      <h2>Why Web Components</h2>
+      <ul>
+        <li>
+          <strong>Framework-agnostic by construction.</strong> If a browser can
+          parse HTML, it can render a Lucid component.
+        </li>
+        <li>
+          <strong>Style-isolated by default.</strong> Shadow DOM prevents
+          outer CSS from leaking in and component CSS from leaking out.
+        </li>
+        <li>
+          <strong>Themable via tokens.</strong> Every component reads CSS
+          custom properties like <code>--lucid-color-primary</code>. Override
+          on any ancestor and the change cascades.
+        </li>
+      </ul>
+
+      <h2>Accessibility &amp; internationalization</h2>
+      <p>
+        Every shipped component passes axe-core at WCAG 2.1 AA and has
+        committed baseline screenshots in both LTR and RTL. Physical CSS
+        properties (<code>margin-left</code>, <code>float: right</code>) are
+        rejected by CI. Focus, keyboard interaction, and ARIA state are part
+        of the contract, not an afterthought.
+      </p>
+    </lucid-tab-panel>
+
+    <lucid-tab-panel value="installation" class={styles.prose}>
+      <h2>Install</h2>
+      <pre class={styles.proseCode}>bun add @mind-matrix/lucid-components</pre>
+
+      <h2>Load the tokens (optional)</h2>
+      <p>
+        The components render fine without tokens, but you'll want the
+        defaults for a real look.
+      </p>
+      <pre class={styles.proseCode}>{`<link
+  rel="stylesheet"
+  href="@mind-matrix/lucid-core/tokens.css"
+/>`}</pre>
+
+      <h2>Import once at your app entry</h2>
+      <pre class={styles.proseCode}>import "@mind-matrix/lucid-components";</pre>
+
+      <h2>Use anywhere</h2>
+      <pre class={styles.proseCode}>{`<lucid-button variant="primary">Save</lucid-button>
+
+<lucid-card variant="elevated">
+  <h3 slot="title">Card title</h3>
+  <p>Slots take any HTML.</p>
+</lucid-card>`}</pre>
+
+      <h2>Framework notes</h2>
+      <ul>
+        <li>
+          <strong>React (17+).</strong> Plain <code>onClick</code> works on
+          <code>&lt;lucid-button&gt;</code> because it dispatches native
+          <code>click</code> events. For components that dispatch custom
+          events, install <code>@mind-matrix/lucid-react</code>.
+        </li>
+        <li>
+          <strong>Vue.</strong> Add <code>isCustomElement</code> matching
+          <code>lucid-*</code> to your Vue compiler options once.
+        </li>
+        <li>
+          <strong>Angular.</strong> Add <code>CUSTOM_ELEMENTS_SCHEMA</code>
+          to the module or component that uses <code>&lt;lucid-*&gt;</code>.
+        </li>
+        <li>
+          <strong>Astro / vanilla / Svelte / Solid.</strong> Nothing to
+          configure.
+        </li>
+      </ul>
+    </lucid-tab-panel>
+  </lucid-tabs>
+</Base>

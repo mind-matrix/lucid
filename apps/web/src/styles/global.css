@@ -1,0 +1,28 @@
+/*
+ * Landing-only overrides on top of @mind-matrix/lucid-core/tokens.css.
+ * Loaded in Base.astro before this file, so the tokens are already set;
+ * we only override what we want to look bigger for the marketing pages.
+ */
+
+:root {
+  --lucid-font-size-md: 15px;
+  --lucid-font-size-lg: 18px;
+  --lucid-font-size-xl: 24px;
+  --lucid-font-size-2xl: 40px;
+  --lucid-font-size-3xl: 56px;
+
+  --page-max-width: 1080px;
+}
+
+body {
+  font-family: var(--lucid-font-family);
+  font-size: var(--lucid-font-size-md);
+  color: var(--lucid-color-fg);
+  background: var(--lucid-color-bg);
+}
+
+/* Hide unupgraded custom elements to prevent flash of unstyled content
+ * during the tiny window between HTML parse and `customElements.define()`. */
+:not(:defined) {
+  visibility: hidden;
+}

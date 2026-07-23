@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>lucid-nav — fixture</title>
+    <link rel="stylesheet" href="../../../../core/src/tokens.css" />
+    <style>
+      body {
+        font-family: var(--lucid-font-family);
+        color: var(--lucid-color-fg);
+        background: var(--lucid-color-bg);
+        padding: var(--lucid-space-6);
+        display: grid;
+        gap: var(--lucid-space-6);
+      }
+      h2 {
+        font-size: var(--lucid-font-size-md);
+        color: var(--lucid-color-muted);
+        margin: 0;
+      }
+    </style>
+    <script type="module" src="./LucidNav.fixture.ts"></script>
+  </head>
+  <body>
+    <h2>horizontal (default)</h2>
+    <lucid-nav label="Primary" data-testid="nav-primary">
+      <lucid-nav-link href="/" data-testid="nav-home">Home</lucid-nav-link>
+      <lucid-nav-link href="/docs" active data-testid="nav-docs">Docs</lucid-nav-link>
+      <lucid-nav-link href="/blog" data-testid="nav-blog">Blog</lucid-nav-link>
+      <lucid-nav-link
+        href="https://github.com/mind-matrix/lucid"
+        target="_blank"
+        data-testid="nav-github"
+      >
+        GitHub
+      </lucid-nav-link>
+    </lucid-nav>
+
+    <h2>vertical</h2>
+    <lucid-nav orientation="vertical" label="Sidebar" data-testid="nav-sidebar">
+      <lucid-nav-link href="/getting-started" data-testid="nav-side-start">Getting Started</lucid-nav-link>
+      <lucid-nav-link href="/components" active data-testid="nav-side-components">Components</lucid-nav-link>
+      <lucid-nav-link href="/tokens" data-testid="nav-side-tokens">Tokens</lucid-nav-link>
+    </lucid-nav>
+
+    <h2>disabled link</h2>
+    <lucid-nav label="States" data-testid="nav-states">
+      <lucid-nav-link href="/enabled" data-testid="nav-enabled">Enabled</lucid-nav-link>
+      <lucid-nav-link href="/disabled" disabled data-testid="nav-disabled">Disabled</lucid-nav-link>
+    </lucid-nav>
+  </body>
+</html>

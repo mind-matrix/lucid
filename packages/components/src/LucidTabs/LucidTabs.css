@@ -1,0 +1,48 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-tabs> — the tablist container.
+ *
+ * Layout only. Tab appearance lives on <lucid-tab>; panel padding
+ * lives on <lucid-tab-panel>.
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-tabs-gap: 0;
+  --lucid-tabs-vertical-panel-gap: var(--lucid-space-6);
+  --lucid-tabs-tablist-border-color: var(--lucid-color-border);
+  --lucid-tabs-tablist-border-width: var(--lucid-border-width-sm);
+
+  display: block;
+  font-family: var(--lucid-font-family);
+  color: var(--lucid-color-fg);
+}
+
+:host([orientation="vertical"]) {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--lucid-tabs-vertical-panel-gap);
+  align-items: start;
+}
+
+.tablist {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: end;
+  gap: var(--lucid-tabs-gap);
+  border-block-end: var(--lucid-tabs-tablist-border-width) solid
+    var(--lucid-tabs-tablist-border-color);
+}
+
+:host([orientation="vertical"]) .tablist {
+  grid-auto-flow: row;
+  align-items: stretch;
+  justify-content: unset;
+  justify-items: start;
+  border-block-end: none;
+  border-inline-end: var(--lucid-tabs-tablist-border-width) solid
+    var(--lucid-tabs-tablist-border-color);
+}
+
+:host([hidden]) {
+  display: none;
+}
