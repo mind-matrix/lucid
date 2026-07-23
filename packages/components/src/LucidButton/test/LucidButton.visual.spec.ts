@@ -26,5 +26,27 @@ for (const dir of DIRS) {
         animations: "disabled",
       });
     });
+
+    // Hover screenshots capture the parent row instead of the host —
+    // the hover-shadow + `-1px` transform extend past the host's
+    // bounding box, so host-level element screenshots would clip.
+    for (const testid of ["btn-primary", "btn-ghost", "btn-default"] as const) {
+      test(`${testid} — hover state (${dir})`, async ({ page }) => {
+        await page.locator(`lucid-button[data-testid='${testid}']`).hover();
+        const container = page
+          .locator(`lucid-button[data-testid='${testid}']`)
+          .locator("..");
+        await expect(container).toHaveScreenshot(
+          `LucidButton-${testid}-hover-${dir}.png`,
+          {
+            // Tight tolerance: hover shadow + 1px translate produce a
+            // small but distinct pixel delta. Default 1% would let a
+            // "no hover styling" regression through.
+            maxDiffPixelRatio: 0.001,
+            animations: "disabled",
+          },
+        );
+      });
+    }
   });
 }

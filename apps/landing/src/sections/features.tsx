@@ -69,10 +69,20 @@ function renderIcon(node: IconNode): SVGElement {
 export class LucidFeatures extends LucidElement {
   static override shadow: ShadowRootMode | false = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Named region landmark. `aria-labelledby` points at the H2 rendered
+    // below so screen readers announce the region with its heading name.
+    if (!this.hasAttribute("role")) this.setAttribute("role", "region");
+    if (!this.hasAttribute("aria-labelledby")) {
+      this.setAttribute("aria-labelledby", "lucid-features-heading");
+    }
+  }
+
   protected render(): Node {
     return (
       <section class="features" id="features">
-        <h2 class="features__title">Built for interops</h2>
+        <h2 class="features__title" id="lucid-features-heading">Built for interops</h2>
         <div class="features__grid">
           {FEATURES.map((f) => (
             <lucid-card clickable>

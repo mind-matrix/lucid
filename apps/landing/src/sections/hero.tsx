@@ -4,6 +4,14 @@ import "./hero.css";
 export class LucidHero extends LucidElement {
   static override shadow: ShadowRootMode | false = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Page banner landmark. Screen readers navigate here via landmark
+    // shortcuts; content-extraction heuristics (Reader Mode) treat it
+    // as page header context.
+    if (!this.hasAttribute("role")) this.setAttribute("role", "banner");
+  }
+
   protected render(): Node {
     return (
       <section class="hero">

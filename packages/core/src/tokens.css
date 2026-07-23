@@ -79,5 +79,12 @@
 
   /* Neutral surfaces / derived text */
   --lucid-color-surface-subtle: #0f172a0a;
+  --lucid-color-surface-subtle-hover: #0f172a14;
   --lucid-color-fg-body: #0f172ab8;
+
+  /* Interaction — hover variants of the base colors.
+   * `-hover` colors are ~8% darker than their base. Clients overriding
+   * a base color should also override its `-hover` sibling. */
+  --lucid-color-primary-hover: #4338ca;
+  --lucid-color-fg-hover: #0f172a14;
 }

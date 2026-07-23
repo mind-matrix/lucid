@@ -15,6 +15,10 @@
   --lucid-btn-spinner-duration: 600ms;
   --lucid-btn-spinner-duration-reduced-motion: 2s;
   --lucid-btn-active-translate-y: 1px;
+  --lucid-btn-hover-shadow: var(--lucid-shadow-sm);
+  --lucid-btn-hover-bg-primary: var(--lucid-color-primary-hover);
+  --lucid-btn-hover-bg-ghost: var(--lucid-color-fg-hover);
+  --lucid-btn-hover-bg-default: var(--lucid-color-surface-subtle-hover);
   --lucid-btn-color-error: #dc2626;
   --lucid-btn-color-success: #16a34a;
 
@@ -36,7 +40,10 @@
   border-radius: var(--lucid-radius-md);
   font-size: var(--lucid-font-size-md);
   font-weight: var(--lucid-font-weight-medium);
-  transition: opacity var(--lucid-btn-transition-duration),
+  transition:
+    background-color var(--lucid-btn-transition-duration),
+    box-shadow var(--lucid-btn-transition-duration),
+    opacity var(--lucid-btn-transition-duration),
     transform var(--lucid-btn-transition-duration);
   user-select: none;
   text-decoration: none;
@@ -73,6 +80,27 @@
   background: var(--lucid-color-bg);
   color: var(--lucid-color-fg);
   border: var(--lucid-border-width-sm) solid var(--lucid-color-border);
+}
+
+/* ─── Hover ──────────────────────────────────────────────────
+ * Gated so hover styles never apply to disabled or pending
+ * buttons. Primary and default get a subtle lift + shadow;
+ * ghost fills its transparent bg without shifting position.
+ * ─────────────────────────────────────────────────────────── */
+
+:host([variant="primary"]) [part="control"]:not([disabled]):not([aria-disabled="true"]):hover {
+  background: var(--lucid-btn-hover-bg-primary);
+  box-shadow: var(--lucid-btn-hover-shadow);
+}
+
+:host([variant="ghost"]) [part="control"]:not([disabled]):not([aria-disabled="true"]):hover {
+  background: var(--lucid-btn-hover-bg-ghost);
+}
+
+:host(:not([variant])) [part="control"]:not([disabled]):not([aria-disabled="true"]):hover,
+:host([variant=""]) [part="control"]:not([disabled]):not([aria-disabled="true"]):hover {
+  background: var(--lucid-btn-hover-bg-default);
+  box-shadow: var(--lucid-btn-hover-shadow);
 }
 
 .lucid-btn-label,
@@ -131,5 +159,9 @@
   }
   [part="control"] {
     transition-duration: 0.01ms;
+  }
+  [part="control"]:hover,
+  [part="control"]:active {
+    transform: none !important;
   }
 }
