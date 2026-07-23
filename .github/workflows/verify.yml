@@ -44,19 +44,35 @@ jobs:
       - name: Install Playwright chromium
         run: bunx playwright install --with-deps chromium
 
-      - name: Accessibility + visual regression
-        # `updateSnapshots: "missing"` in playwright.config.ts lets baselines
-        # self-bootstrap the first time a test runs in a new OS/browser combo
-        # (e.g. chromium-linux on GH runners). Existing baselines are compared
-        # strictly.
+      # Check whether Linux baselines have ever been committed. If not, this
+      # is the first CI run on Linux — we bootstrap baselines and pass. On
+      # every subsequent run baselines already exist and we compare strictly.
+      - name: Detect Linux baselines
+        id: baselines
+        run: |
+          if compgen -G "packages/components/src/**/__snapshots__/*-chromium-linux.png" > /dev/null; then
+            echo "state=present" >> "$GITHUB_OUTPUT"
+          else
+            echo "state=absent" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bootstrap missing Linux baselines
+        if: steps.baselines.outputs.state == 'absent'
+        run: bunx playwright test --update-snapshots
+
+      - name: Accessibility + visual regression (strict)
+        if: steps.baselines.outputs.state == 'present'
         run: bunx playwright test
 
       - name: Commit generated Linux baselines
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: |
+          steps.baselines.outputs.state == 'absent' &&
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/master'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add packages/components/src/**/__snapshots__/*-chromium-linux.png || true
+          git add packages/components/src/**/__snapshots__/*-chromium-linux.png
           if ! git diff --cached --quiet; then
             git commit -m "chore(visual): bootstrap Linux baselines [skip ci]"
             git push

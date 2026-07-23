@@ -7,9 +7,6 @@ export default defineConfig({
   testMatch: "**/*.spec.ts",
   snapshotPathTemplate:
     "{testDir}/{testFileDir}/__snapshots__/{arg}{-projectName}{-platform}{ext}",
-  // Missing baselines self-bootstrap on the first run for that OS/browser
-  // combination. Existing baselines are compared strictly.
-  updateSnapshots: "missing",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
