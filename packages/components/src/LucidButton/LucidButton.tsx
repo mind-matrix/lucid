@@ -18,10 +18,16 @@ export class LucidButton extends LucidElement {
   static override props: Record<string, PropDef> = {
     variant: { type: "string", default: "" },
     disabled: { type: "boolean", default: false },
+    href: { type: "string", default: "" },
+    target: { type: "string", default: "" },
+    rel: { type: "string", default: "" },
   };
 
   variant: string = "";
   disabled: boolean = false;
+  href: string = "";
+  target: string = "";
+  rel: string = "";
 
   #state: LucidButtonState = LucidButtonState.IDLE;
   #stateLabel: string | undefined;
@@ -47,21 +53,23 @@ export class LucidButton extends LucidElement {
     this.requestUpdate();
   }
 
+  #computedRel(): string | undefined {
+    if (this.rel) return this.rel;
+    // Safe default for external links: prevent tab-nabbing and referrer leaks.
+    if (this.target === "_blank") return "noopener noreferrer";
+    return undefined;
+  }
+
   protected render(): Node {
     const state = this.#state;
     const isPending = state === LucidButtonState.PENDING;
     const isError = state === LucidButtonState.ERROR;
     const isSuccess = state === LucidButtonState.SUCCESS;
+    const isInactive = this.disabled || isPending;
+    const isLink = this.href !== "";
 
-    return (
-      <button
-        part="control"
-        data-state={state}
-        disabled={this.disabled || isPending}
-        aria-busy={isPending ? "true" : undefined}
-        aria-invalid={isError ? "true" : undefined}
-        aria-live={state === LucidButtonState.IDLE ? undefined : "polite"}
-      >
+    const chrome = (
+      <>
         {isPending && (
           <span
             class="lucid-btn-spinner"
@@ -82,6 +90,39 @@ export class LucidButton extends LucidElement {
         <span class="lucid-btn-label" aria-hidden={isPending ? "true" : undefined}>
           <slot />
         </span>
+      </>
+    );
+
+    if (isLink) {
+      return (
+        <a
+          part="control"
+          data-state={state}
+          href={isInactive ? undefined : this.href}
+          target={this.target || undefined}
+          rel={this.#computedRel()}
+          role="button"
+          aria-disabled={isInactive ? "true" : undefined}
+          aria-busy={isPending ? "true" : undefined}
+          aria-invalid={isError ? "true" : undefined}
+          aria-live={state === LucidButtonState.IDLE ? undefined : "polite"}
+          tabindex={isInactive ? "-1" : undefined}
+        >
+          {chrome}
+        </a>
+      );
+    }
+
+    return (
+      <button
+        part="control"
+        data-state={state}
+        disabled={isInactive}
+        aria-busy={isPending ? "true" : undefined}
+        aria-invalid={isError ? "true" : undefined}
+        aria-live={state === LucidButtonState.IDLE ? undefined : "polite"}
+      >
+        {chrome}
       </button>
     );
   }

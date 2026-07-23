@@ -8,7 +8,8 @@
     "build": "bun run ../../scripts/build-landing.ts"
   },
   "dependencies": {
+    "@mind-matrix/lucid-components": "workspace:*",
     "@mind-matrix/lucid-core": "workspace:*",
-    "@mind-matrix/lucid-components": "workspace:*"
+    "lucide": "^1.25.0"
   }
 }

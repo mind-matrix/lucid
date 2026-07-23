@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>lucid-card — fixture</title>
+    <link rel="stylesheet" href="../../../../core/src/tokens.css" />
+    <style>
+      body {
+        font-family: var(--lucid-font-family);
+        color: var(--lucid-color-fg);
+        background: var(--lucid-color-bg);
+        padding: var(--lucid-space-6);
+        display: grid;
+        gap: var(--lucid-space-6);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: var(--lucid-space-4);
+      }
+      h2 {
+        font-size: var(--lucid-font-size-md);
+        color: var(--lucid-color-muted);
+        margin: 0;
+      }
+    </style>
+    <script type="module" src="./LucidCard.fixture.ts"></script>
+  </head>
+  <body>
+    <h2>variants</h2>
+    <div class="grid">
+      <lucid-card data-testid="card-default">
+        <div slot="icon" aria-hidden="true">◇</div>
+        <h3 slot="title">Default card</h3>
+        <p>Outlined by default — a thin border, transparent background.</p>
+      </lucid-card>
+      <lucid-card variant="outlined" data-testid="card-outlined">
+        <div slot="icon" aria-hidden="true">◉</div>
+        <h3 slot="title">Outlined</h3>
+        <p>Explicit outlined variant. Same look as default.</p>
+      </lucid-card>
+      <lucid-card variant="filled" data-testid="card-filled">
+        <div slot="icon" aria-hidden="true">≡</div>
+        <h3 slot="title">Filled</h3>
+        <p>Subtle tinted background, no border.</p>
+      </lucid-card>
+      <lucid-card variant="elevated" data-testid="card-elevated">
+        <div slot="icon" aria-hidden="true">◐</div>
+        <h3 slot="title">Elevated</h3>
+        <p>Raised with a soft shadow. Best on tinted page backgrounds.</p>
+      </lucid-card>
+    </div>
+
+    <h2>without icon</h2>
+    <div class="grid">
+      <lucid-card data-testid="card-no-icon">
+        <h3 slot="title">Icon-free card</h3>
+        <p>The icon slot is optional. This card omits it entirely.</p>
+      </lucid-card>
+    </div>
+
+    <h2>body-only (no title, no icon)</h2>
+    <div class="grid">
+      <lucid-card data-testid="card-body-only">
+        <p>Just a body paragraph. Useful for callouts.</p>
+      </lucid-card>
+    </div>
+
+    <h2>clickable</h2>
+    <div class="grid">
+      <lucid-card clickable variant="elevated" data-testid="card-clickable">
+        <div slot="icon" aria-hidden="true">◇</div>
+        <h3 slot="title">Clickable card</h3>
+        <p>Tab to focus, Enter or Space to activate.</p>
+      </lucid-card>
+      <lucid-card clickable disabled variant="elevated" data-testid="card-clickable-disabled">
+        <div slot="icon" aria-hidden="true">◉</div>
+        <h3 slot="title">Disabled</h3>
+        <p>Focusable via aria-disabled, but click is suppressed.</p>
+      </lucid-card>
+    </div>
+  </body>
+</html>

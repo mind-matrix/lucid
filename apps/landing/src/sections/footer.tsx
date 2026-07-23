@@ -7,7 +7,7 @@ export class LucidFooter extends LucidElement {
   protected render(): Node {
     return (
       <footer class="footer">
-        built with lucid · MIT
+        Built with Lucid · MIT
       </footer>
     );
   }

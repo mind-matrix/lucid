@@ -32,6 +32,10 @@ const useBuiltPackages: BunPlugin = {
   },
 };
 
+// Measure library bundle size and write apps/landing/src/generated/bundle-size.ts.
+// Runs before Bun.build so the landing bundle picks up the freshly-generated module.
+await Bun.$`bun ${join(ROOT, "scripts/measure-bundle-size.ts")}`;
+
 await rm(OUT, { recursive: true, force: true });
 
 const result = await Bun.build({
@@ -80,6 +84,10 @@ const finalHtml = rawHtml
     `<link rel="stylesheet" href="${normalized}assets/reset.css" />`,
   )
   .replace(
+    /<link rel="stylesheet" href="\.\.\/\.\.\/packages\/core\/src\/tokens\.css" \/>/,
+    `<link rel="stylesheet" href="${normalized}assets/tokens.css" />`,
+  )
+  .replace(
     /<link rel="stylesheet" href="\.\/src\/styles\/global\.css" \/>/,
     `<link rel="stylesheet" href="${normalized}assets/global.css" />`,
   )
@@ -92,6 +100,7 @@ await Bun.write(join(OUT, "index.html"), finalHtml);
 
 for (const cssPath of [
   join(APP, "src/styles/reset.css"),
+  join(ROOT, "packages/core/src/tokens.css"),
   join(APP, "src/styles/global.css"),
 ]) {
   await Bun.write(join(OUT, "assets", basename(cssPath)), await Bun.file(cssPath).text());

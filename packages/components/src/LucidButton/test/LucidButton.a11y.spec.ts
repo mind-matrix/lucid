@@ -96,7 +96,7 @@ test.describe("lucid-button — accessibility", () => {
     await page.goto("/button");
     await page.waitForSelector("lucid-button[data-testid='btn-pending']");
 
-    const internal = page.locator("lucid-button[data-testid='btn-pending']").locator("button");
+    const internal = page.locator("lucid-button[data-testid='btn-pending']").locator("[part='control']");
     await expect(internal).toHaveAttribute("aria-busy", "true");
     await expect(internal).toHaveAttribute("disabled", "");
     await expect(internal).toHaveAttribute("data-state", "pending");
@@ -125,14 +125,14 @@ test.describe("lucid-button — accessibility", () => {
 
   test("setState(ERROR) sets aria-invalid and data-state=error", async ({ page }) => {
     await page.goto("/button");
-    const internal = page.locator("lucid-button[data-testid='btn-error']").locator("button");
+    const internal = page.locator("lucid-button[data-testid='btn-error']").locator("[part='control']");
     await expect(internal).toHaveAttribute("aria-invalid", "true");
     await expect(internal).toHaveAttribute("data-state", "error");
   });
 
   test("setState(SUCCESS) exposes data-state=success", async ({ page }) => {
     await page.goto("/button");
-    const internal = page.locator("lucid-button[data-testid='btn-success']").locator("button");
+    const internal = page.locator("lucid-button[data-testid='btn-success']").locator("[part='control']");
     await expect(internal).toHaveAttribute("data-state", "success");
   });
 
@@ -146,7 +146,7 @@ test.describe("lucid-button — accessibility", () => {
       const settle = () => new Promise((r) => queueMicrotask(() => r(null)));
       const read = () =>
         observed.push(
-          el.shadowRoot.querySelector("button").getAttribute("data-state") ?? "",
+          el.shadowRoot.querySelector("[part='control']").getAttribute("data-state") ?? "",
         );
 
       el.setState("pending");
@@ -162,6 +162,68 @@ test.describe("lucid-button — accessibility", () => {
     });
 
     expect(stateSequence).toEqual(["pending", "success", "idle"]);
+  });
+
+  test("with href renders internal <a>, not <button>", async ({ page }) => {
+    await page.goto("/button");
+    const tag = await page.evaluate(() => {
+      const host = document.querySelector<HTMLElement>(
+        "lucid-button[data-testid='btn-link']",
+      )!;
+      return host.shadowRoot!.querySelector("[part='control']")?.tagName;
+    });
+    expect(tag).toBe("A");
+  });
+
+  test("with href, host has a single tab stop (only the anchor is focusable)", async ({
+    page,
+  }) => {
+    await page.goto("/button");
+    const focusableCount = await page.evaluate(() => {
+      const host = document.querySelector<HTMLElement>(
+        "lucid-button[data-testid='btn-link']",
+      )!;
+      const inShadow = host.shadowRoot!.querySelectorAll<HTMLElement>(
+        "a, button, [tabindex]:not([tabindex='-1'])",
+      );
+      return inShadow.length;
+    });
+    expect(focusableCount).toBe(1);
+  });
+
+  test("target=_blank gets a safe rel by default", async ({ page }) => {
+    await page.goto("/button");
+    const rel = await page.evaluate(() => {
+      const host = document.querySelector<HTMLElement>(
+        "lucid-button[data-testid='btn-link-external']",
+      )!;
+      return host.shadowRoot!
+        .querySelector("[part='control']")!
+        .getAttribute("rel");
+    });
+    expect(rel).toBe("noopener noreferrer");
+  });
+
+  test("disabled link has no href and is not tabbable", async ({ page }) => {
+    await page.goto("/button");
+    const info = await page.evaluate(() => {
+      const host = document.querySelector<HTMLElement>(
+        "lucid-button[data-testid='btn-link-disabled']",
+      )!;
+      const anchor = host.shadowRoot!.querySelector<HTMLElement>(
+        "[part='control']",
+      )!;
+      return {
+        tag: anchor.tagName,
+        href: anchor.getAttribute("href"),
+        ariaDisabled: anchor.getAttribute("aria-disabled"),
+        tabindex: anchor.getAttribute("tabindex"),
+      };
+    });
+    expect(info.tag).toBe("A");
+    expect(info.href).toBe(null);
+    expect(info.ariaDisabled).toBe("true");
+    expect(info.tabindex).toBe("-1");
   });
 });
 

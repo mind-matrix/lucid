@@ -29,14 +29,12 @@ export class LucidHero extends LucidElement {
           >
             Explore
           </lucid-button>
-          <lucid-button variant="ghost">
-            <a
-              href="https://github.com/mind-matrix/lucid"
-              target="_blank"
-              rel="noopener"
-            >
-              GitHub
-            </a>
+          <lucid-button
+            variant="ghost"
+            href="https://github.com/mind-matrix/lucid"
+            target="_blank"
+          >
+            GitHub
           </lucid-button>
         </div>
       </section>

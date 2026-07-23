@@ -55,5 +55,28 @@
       <lucid-button variant="primary" data-testid="btn-success">Done</lucid-button>
     </div>
 
+    <h2>polymorphic (href)</h2>
+    <div class="row">
+      <lucid-button variant="ghost" href="/somewhere" data-testid="btn-link">
+        In-app link
+      </lucid-button>
+      <lucid-button
+        variant="ghost"
+        href="https://example.com"
+        target="_blank"
+        data-testid="btn-link-external"
+      >
+        External link
+      </lucid-button>
+      <lucid-button
+        variant="ghost"
+        href="/somewhere"
+        disabled
+        data-testid="btn-link-disabled"
+      >
+        Disabled link
+      </lucid-button>
+    </div>
+
   </body>
 </html>

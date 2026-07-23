@@ -65,4 +65,19 @@
   /* Outline (focus ring) */
   --lucid-outline-width: 2px;
   --lucid-outline-offset: 2px;
+
+  /* Shadow (elevation) — hex alpha suffix: 1a=10%, 33=20%, 4d=30% */
+  --lucid-shadow-color: #0f172a1a;
+  --lucid-shadow-color-strong: #0f172a33;
+  --lucid-shadow-sm: 0 1px 2px var(--lucid-shadow-color);
+  --lucid-shadow-md:
+    0 1px 3px var(--lucid-shadow-color),
+    0 6px 16px var(--lucid-shadow-color-strong);
+  --lucid-shadow-lg:
+    0 4px 8px var(--lucid-shadow-color),
+    0 16px 40px var(--lucid-shadow-color-strong);
+
+  /* Neutral surfaces / derived text */
+  --lucid-color-surface-subtle: #0f172a0a;
+  --lucid-color-fg-body: #0f172ab8;
 }

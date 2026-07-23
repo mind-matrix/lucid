@@ -4,6 +4,10 @@
  * Global design tokens live in @mind-matrix/lucid-core/tokens.css.
  * The variables below are specific to this component and expose a
  * surface for consumers to fine-tune without touching global tokens.
+ *
+ * The internal control renders as either <button> or <a> depending
+ * on whether href is set. Both carry part="control" so the styles
+ * below apply uniformly.
  * ───────────────────────────────────────────────────────────── */
 
 :host {
@@ -18,7 +22,7 @@
   font-family: var(--lucid-font-family);
 }
 
-button {
+[part="control"] {
   all: unset;
   box-sizing: border-box;
   cursor: pointer;
@@ -35,35 +39,37 @@ button {
   transition: opacity var(--lucid-btn-transition-duration),
     transform var(--lucid-btn-transition-duration);
   user-select: none;
+  text-decoration: none;
 }
 
-button:focus-visible {
+[part="control"]:focus-visible {
   outline: var(--lucid-outline-width) solid var(--lucid-color-primary);
   outline-offset: var(--lucid-outline-offset);
 }
 
-button:active {
+[part="control"]:active {
   transform: translateY(var(--lucid-btn-active-translate-y));
 }
 
-button[disabled] {
+[part="control"][disabled],
+[part="control"][aria-disabled="true"] {
   cursor: not-allowed;
   opacity: var(--lucid-opacity-disabled);
 }
 
-:host([variant="primary"]) button {
+:host([variant="primary"]) [part="control"] {
   background: var(--lucid-color-primary);
   color: var(--lucid-color-primary-fg);
 }
 
-:host([variant="ghost"]) button {
+:host([variant="ghost"]) [part="control"] {
   background: transparent;
   color: var(--lucid-color-fg);
   border: var(--lucid-border-width-sm) solid var(--lucid-color-border);
 }
 
-:host(:not([variant])) button,
-:host([variant=""]) button {
+:host(:not([variant])) [part="control"],
+:host([variant=""]) [part="control"] {
   background: var(--lucid-color-bg);
   color: var(--lucid-color-fg);
   border: var(--lucid-border-width-sm) solid var(--lucid-color-border);
@@ -83,7 +89,7 @@ button[disabled] {
   gap: var(--lucid-space-2);
 }
 
-button[data-state="pending"] .lucid-btn-label {
+[part="control"][data-state="pending"] .lucid-btn-label {
   visibility: hidden;
 }
 
@@ -123,7 +129,7 @@ button[data-state="pending"] .lucid-btn-label {
   .lucid-btn-spinner {
     animation-duration: var(--lucid-btn-spinner-duration-reduced-motion);
   }
-  button {
+  [part="control"] {
     transition-duration: 0.01ms;
   }
 }

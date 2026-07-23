@@ -1,46 +1,70 @@
 import { LucidElement, defineElement } from "@mind-matrix/lucid-core";
+import "@mind-matrix/lucid-components";
+import {
+  Blocks,
+  Boxes,
+  Feather,
+  Package,
+  Shield,
+  Zap,
+  createElement as createLucideIcon,
+  type IconNode,
+} from "lucide";
+import { bundleSize } from "../generated/bundle-size.ts";
 import "./features.css";
 
-type Feature = { icon: string; title: string; body: string };
+type Feature = { icon: IconNode; title: string; body: string };
+
+const SIZE = bundleSize.componentsAndRuntimeGzip.formatted;
 
 const FEATURES: Feature[] = [
   {
-    icon: "◇",
+    icon: Boxes,
     title: "Framework-agnostic",
     body:
       "Web Components render natively in React, Vue, Angular, Astro, Svelte, and vanilla HTML.",
   },
   {
-    icon: "◉",
+    icon: Shield,
     title: "Style-isolated",
     body:
       "Shadow DOM guarantees your CSS can't leak out and outer CSS can't leak in. Theme via CSS custom properties.",
   },
   {
-    icon: "≡",
-    title: "No VDOM",
+    icon: Zap,
+    title: "No Virtual DOM",
     body:
       "JSX compiles straight to document.createElement. Signals wire reactivity in place.",
   },
   {
-    icon: "◐",
-    title: "Sub-3KB gzipped",
+    icon: Feather,
+    title: `${SIZE} gzipped`,
     body:
-      "The runtime, button, and React interop combined weigh less than a favicon.",
+      `The runtime and every shipped component combined - measured live at build time, currently ${SIZE} over the wire.`,
   },
   {
-    icon: "⚡",
+    icon: Package,
     title: "Bun-native",
     body:
-      "Ships as ESM. Built, tested, and served with Bun — no webpack, no Vite, no bundler config.",
+      "Ships as ESM. Built, tested, and served with Bun - no webpack, no Vite, no bundler config.",
   },
   {
-    icon: "◈",
+    icon: Blocks,
     title: "Rust-compatible",
     body:
       "WASM apps consume lucid components through standard JS interop. Same DOM API, no bridge.",
   },
 ];
+
+function renderIcon(node: IconNode): SVGElement {
+  return createLucideIcon(node, {
+    width: 20,
+    height: 20,
+    "stroke-width": 2,
+    "aria-hidden": "true",
+    focusable: "false",
+  });
+}
 
 export class LucidFeatures extends LucidElement {
   static override shadow: ShadowRootMode | false = false;
@@ -48,14 +72,14 @@ export class LucidFeatures extends LucidElement {
   protected render(): Node {
     return (
       <section class="features" id="features">
-        <h2 class="features__title">Built for interop</h2>
+        <h2 class="features__title">Built for interops</h2>
         <div class="features__grid">
           {FEATURES.map((f) => (
-            <article class="feature">
-              <div class="feature__icon" aria-hidden="true">{f.icon}</div>
-              <h3 class="feature__title">{f.title}</h3>
-              <p class="feature__body">{f.body}</p>
-            </article>
+            <lucid-card clickable>
+              <div slot="icon" aria-hidden="true">{renderIcon(f.icon)}</div>
+              <h3 slot="title">{f.title}</h3>
+              <p>{f.body}</p>
+            </lucid-card>
           ))}
         </div>
       </section>

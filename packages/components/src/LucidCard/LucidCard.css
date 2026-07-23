@@ -1,0 +1,164 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-card> — component-local variables
+ *
+ * Global design tokens live in @mind-matrix/lucid-core/tokens.css.
+ * The variables below are specific to this component and expose a
+ * surface for consumers to fine-tune without touching global tokens.
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-card-padding-block: var(--lucid-space-6);
+  --lucid-card-padding-inline: var(--lucid-space-6);
+  --lucid-card-gap: var(--lucid-space-2);
+  --lucid-card-radius: var(--lucid-radius-lg);
+  --lucid-card-border-color: var(--lucid-color-border);
+  --lucid-card-border-width: var(--lucid-border-width-sm);
+  --lucid-card-bg: transparent;
+  --lucid-card-bg-filled: var(--lucid-color-surface-subtle);
+  --lucid-card-shadow-elevated: var(--lucid-shadow-md);
+  --lucid-card-icon-size: var(--lucid-space-8);
+  --lucid-card-icon-bg: rgb(79 70 229 / 0.15);
+  --lucid-card-icon-fg: var(--lucid-color-primary);
+  --lucid-card-icon-radius: var(--lucid-radius-sm);
+  --lucid-card-icon-gap: var(--lucid-space-2);
+  --lucid-card-title-size: var(--lucid-font-size-lg);
+  --lucid-card-title-weight: var(--lucid-font-weight-semibold);
+  --lucid-card-body-color: var(--lucid-color-fg-body);
+  --lucid-card-body-size: var(--lucid-font-size-md);
+
+  /* Interactive-state overrides — only apply when [clickable] is set. */
+  --lucid-card-transition-duration: var(--lucid-btn-transition-duration, 120ms);
+  --lucid-card-hover-bg: var(--lucid-color-surface-subtle);
+  --lucid-card-hover-shadow: var(--lucid-shadow-lg);
+  --lucid-card-hover-translate-y: -1px;
+  --lucid-card-active-translate-y: 1px;
+
+  display: block;
+  font-family: var(--lucid-font-family);
+  color: var(--lucid-color-fg);
+}
+
+.lucid-card {
+  display: grid;
+  gap: var(--lucid-card-gap);
+  padding-block: var(--lucid-card-padding-block);
+  padding-inline: var(--lucid-card-padding-inline);
+  border-radius: var(--lucid-card-radius);
+  background: var(--lucid-card-bg);
+  block-size: 100%;
+  box-sizing: border-box;
+}
+
+:host([variant="outlined"]) .lucid-card,
+:host(:not([variant])) .lucid-card,
+:host([variant=""]) .lucid-card {
+  border: var(--lucid-card-border-width) solid var(--lucid-card-border-color);
+}
+
+:host([variant="filled"]) .lucid-card {
+  background: var(--lucid-card-bg-filled);
+}
+
+:host([variant="elevated"]) .lucid-card {
+  background: var(--lucid-color-bg);
+  border: var(--lucid-card-border-width) solid var(--lucid-card-border-color);
+  box-shadow: var(--lucid-card-shadow-elevated);
+}
+
+::slotted([slot="icon"]) {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--lucid-card-icon-size);
+  block-size: var(--lucid-card-icon-size);
+  border-radius: var(--lucid-card-icon-radius);
+  background: var(--lucid-card-icon-bg);
+  color: var(--lucid-card-icon-fg);
+  font-weight: var(--lucid-font-weight-bold);
+  font-size: var(--lucid-font-size-md);
+  margin-block-end: var(--lucid-card-icon-gap);
+}
+
+::slotted([slot="title"]) {
+  font-size: var(--lucid-card-title-size);
+  font-weight: var(--lucid-card-title-weight);
+  margin: 0;
+  color: inherit;
+}
+
+::slotted(:not([slot])) {
+  color: var(--lucid-card-body-color);
+  font-size: var(--lucid-card-body-size);
+  margin: 0;
+}
+
+/* ─── Interactive states ──────────────────────────────────────
+ * All state visuals are scoped to `:host([clickable])` so that
+ * non-clickable cards render identically to before.
+ * ─────────────────────────────────────────────────────────── */
+
+:host([clickable]) .lucid-card {
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--lucid-card-transition-duration),
+    box-shadow var(--lucid-card-transition-duration),
+    transform var(--lucid-card-transition-duration),
+    opacity var(--lucid-card-transition-duration);
+}
+
+:host([clickable]) .lucid-card:hover {
+  background: var(--lucid-card-hover-bg);
+  box-shadow: var(--lucid-card-hover-shadow);
+  transform: translateY(var(--lucid-card-hover-translate-y));
+}
+
+:host([clickable][variant="elevated"]) .lucid-card:hover {
+  box-shadow: var(--lucid-card-hover-shadow);
+}
+
+/* Suppress the default outline for mouse focus first, then re-apply
+ * an explicit outline on :focus-visible. Rule order matters here —
+ * :focus and :focus-visible have equal specificity, so :focus-visible
+ * MUST come after :focus for its outline to win. */
+:host([clickable]) .lucid-card:focus {
+  outline: none;
+}
+
+:host([clickable]) .lucid-card:focus-visible {
+  outline: var(--lucid-outline-width) solid var(--lucid-color-primary);
+  outline-offset: var(--lucid-outline-offset);
+}
+
+:host([clickable]) .lucid-card:active {
+  transform: translateY(var(--lucid-card-active-translate-y));
+  box-shadow: var(--lucid-shadow-sm);
+}
+
+:host([clickable][disabled]) .lucid-card,
+:host([clickable]) .lucid-card[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--lucid-opacity-disabled);
+  transform: none;
+  box-shadow: none;
+  background: var(--lucid-card-bg);
+}
+
+:host([clickable][disabled][variant="filled"]) .lucid-card {
+  background: var(--lucid-card-bg-filled);
+}
+
+:host([clickable][disabled][variant="elevated"]) .lucid-card {
+  background: var(--lucid-color-bg);
+  box-shadow: var(--lucid-card-shadow-elevated);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([clickable]) .lucid-card {
+    transition-duration: 0.01ms;
+    transform: none !important;
+  }
+}
+
+:host([hidden]) {
+  display: none;
+}
