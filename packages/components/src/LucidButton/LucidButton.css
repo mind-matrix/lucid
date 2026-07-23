@@ -1,4 +1,19 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-button> — component-local variables
+ *
+ * Global design tokens live in @mind-matrix/lucid-core/tokens.css.
+ * The variables below are specific to this component and expose a
+ * surface for consumers to fine-tune without touching global tokens.
+ * ───────────────────────────────────────────────────────────── */
+
 :host {
+  --lucid-btn-transition-duration: 120ms;
+  --lucid-btn-spinner-duration: 600ms;
+  --lucid-btn-spinner-duration-reduced-motion: 2s;
+  --lucid-btn-active-translate-y: 1px;
+  --lucid-btn-color-error: #dc2626;
+  --lucid-btn-color-success: #16a34a;
+
   display: inline-block;
   font-family: var(--lucid-font-family);
 }
@@ -16,23 +31,24 @@ button {
   padding: var(--lucid-space-2) var(--lucid-space-4);
   border-radius: var(--lucid-radius-md);
   font-size: var(--lucid-font-size-md);
-  font-weight: 500;
-  transition: opacity 120ms, transform 120ms;
+  font-weight: var(--lucid-font-weight-medium);
+  transition: opacity var(--lucid-btn-transition-duration),
+    transform var(--lucid-btn-transition-duration);
   user-select: none;
 }
 
 button:focus-visible {
-  outline: 2px solid var(--lucid-color-primary);
-  outline-offset: 2px;
+  outline: var(--lucid-outline-width) solid var(--lucid-color-primary);
+  outline-offset: var(--lucid-outline-offset);
 }
 
 button:active {
-  transform: translateY(1px);
+  transform: translateY(var(--lucid-btn-active-translate-y));
 }
 
 button[disabled] {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--lucid-opacity-disabled);
 }
 
 :host([variant="primary"]) button {
@@ -43,14 +59,14 @@ button[disabled] {
 :host([variant="ghost"]) button {
   background: transparent;
   color: var(--lucid-color-fg);
-  border: 1px solid var(--lucid-color-border);
+  border: var(--lucid-border-width-sm) solid var(--lucid-color-border);
 }
 
 :host(:not([variant])) button,
 :host([variant=""]) button {
   background: var(--lucid-color-bg);
   color: var(--lucid-color-fg);
-  border: 1px solid var(--lucid-color-border);
+  border: var(--lucid-border-width-sm) solid var(--lucid-color-border);
 }
 
 .lucid-btn-label,
@@ -75,9 +91,9 @@ button[data-state="pending"] .lucid-btn-label {
   inline-size: 1em;
   block-size: 1em;
   border-radius: 50%;
-  border: 2px solid currentColor;
+  border: var(--lucid-border-width-md) solid currentColor;
   border-block-start-color: transparent;
-  animation: lucid-btn-spin 0.6s linear infinite;
+  animation: lucid-btn-spin var(--lucid-btn-spinner-duration) linear infinite;
   place-self: center;
 }
 
@@ -86,16 +102,16 @@ button[data-state="pending"] .lucid-btn-label {
   place-items: center;
   inline-size: 1em;
   block-size: 1em;
-  font-weight: 700;
+  font-weight: var(--lucid-font-weight-bold);
   place-self: center;
 }
 
 .lucid-btn-icon-error {
-  color: #dc2626;
+  color: var(--lucid-btn-color-error);
 }
 
 .lucid-btn-icon-success {
-  color: #16a34a;
+  color: var(--lucid-btn-color-success);
 }
 
 @keyframes lucid-btn-spin {
@@ -105,7 +121,7 @@ button[data-state="pending"] .lucid-btn-label {
 
 @media (prefers-reduced-motion: reduce) {
   .lucid-btn-spinner {
-    animation-duration: 2s;
+    animation-duration: var(--lucid-btn-spinner-duration-reduced-motion);
   }
   button {
     transition-duration: 0.01ms;

@@ -45,4 +45,24 @@
   --lucid-font-size-md: 14px;
   --lucid-font-size-lg: 16px;
   --lucid-font-size-xl: 32px;
+
+  /* Font weight */
+  --lucid-font-weight-regular: 400;
+  --lucid-font-weight-medium: 500;
+  --lucid-font-weight-semibold: 600;
+  --lucid-font-weight-bold: 700;
+
+  /* Opacity (interaction states) */
+  --lucid-opacity-disabled: 0.5;
+  --lucid-opacity-muted: 0.7;
+  --lucid-opacity-full: 1;
+
+  /* Border width */
+  --lucid-border-width-sm: 1px;
+  --lucid-border-width-md: 2px;
+  --lucid-border-width-lg: 4px;
+
+  /* Outline (focus ring) */
+  --lucid-outline-width: 2px;
+  --lucid-outline-offset: 2px;
 }
