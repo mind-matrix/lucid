@@ -13,15 +13,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/mind-matrix/lucid">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logotype.png" alt="Lucid" width="220">
   </a>
-
-<h3 align="center">Lucid</h3>
 
   <p align="center">
     An accessibility and localization-first Design System
     <br />
-    <a href="https://github.com/mind-matrix/lucid"><strong>Explore the docs »</strong></a>
+    <a href="https://mind-matrix.github.io/lucid/docs"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/mind-matrix/lucid">View Demo</a>

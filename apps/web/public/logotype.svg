@@ -1,0 +1,32 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 220 64"
+  width="220"
+  height="64"
+  role="img"
+  aria-label="Lucid"
+>
+  <title>Lucid</title>
+  <!-- Symbol (same geometry as logo.svg) -->
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="#4f46e5" />
+  <path
+    d="M 20 16 L 20 48 L 44 48"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <rect x="30" y="24" width="18" height="14" rx="2" fill="#ffffff" />
+
+  <!-- Wordmark: "Lucid" in bold, letter-spaced slightly negative -->
+  <text
+    x="84"
+    y="45"
+    font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    font-size="34"
+    font-weight="700"
+    letter-spacing="-0.02em"
+    fill="currentColor"
+  >Lucid</text>
+</svg>

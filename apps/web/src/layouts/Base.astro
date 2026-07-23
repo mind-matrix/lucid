@@ -10,6 +10,7 @@ import "@mind-matrix/lucid-core/tokens.css";
 import "../styles/reset.css";
 import "../styles/global.css";
 import styles from "./base.module.css";
+import logotypeSvg from "../../public/logotype.svg?raw";
 
 type Props = { title?: string; description?: string };
 const {
@@ -42,12 +43,17 @@ const withBase = (href: string) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase("/logo.svg")} />
   </head>
   <body>
     <header class={styles.topbar}>
-      <a class={styles.topbarBrand} href={withBase("/")}>
-        <span class={styles.topbarWordmark}>Lucid</span>
-      </a>
+      <a
+        class={styles.topbarBrand}
+        href={withBase("/")}
+        aria-label="Lucid — home"
+        set:html={logotypeSvg}
+      />
+
       <lucid-nav label="Primary">
         {
           NAV.map((item) => (

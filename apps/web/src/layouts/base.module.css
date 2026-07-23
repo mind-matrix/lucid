@@ -13,15 +13,14 @@
 .topbarBrand {
   display: inline-grid;
   align-items: center;
-  gap: var(--lucid-space-2);
   color: var(--lucid-color-fg);
-  font-weight: var(--lucid-font-weight-bold);
-  font-size: var(--lucid-font-size-lg);
   text-decoration: none;
+  line-height: 0;
 }
 
-.topbarWordmark {
-  letter-spacing: -0.01em;
+.topbarBrand svg {
+  block-size: 32px;
+  inline-size: auto;
 }
 
 .page {
