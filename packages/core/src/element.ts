@@ -1,7 +1,11 @@
 import { adoptStyles, type CSSResult } from "./css.ts";
 import { effect } from "./signal.ts";
 
-export type PropType = "string" | "number" | "boolean";
+export enum PropType {
+  STRING = "string",
+  NUMBER = "number",
+  BOOLEAN = "boolean"
+};
 export type PropDef = { type: PropType; default?: unknown; attribute?: string | false };
 
 export type ElementOptions = {
@@ -42,17 +46,17 @@ export abstract class LucidElement extends HTMLElement {
     const entry = Object.entries(ctor.props).find(
       ([n, def]) => (typeof def.attribute === "string" ? def.attribute : n) === name,
     );
-    if (!entry) return;
+    if (!entry) { return; }
     const [propName, def] = entry;
     (this as unknown as Record<string, unknown>)[propName] = coerce(value, def.type);
   }
 
   connectedCallback(): void {
-    if (!this.#renderedNode) this.#doRender();
+    if (!this.#renderedNode) { this.#doRender(); }
   }
 
   requestUpdate(): void {
-    if (this.#updateScheduled || !this.#renderedNode) return;
+    if (this.#updateScheduled || !this.#renderedNode) { return; }
     this.#updateScheduled = true;
     queueMicrotask(() => {
       this.#updateScheduled = false;
@@ -71,7 +75,7 @@ export abstract class LucidElement extends HTMLElement {
   }
 
   disconnectedCallback(): void {
-    for (const d of this.#disposers) d();
+    for (const d of this.#disposers) { d(); }
     this.#disposers = [];
   }
 
@@ -89,12 +93,12 @@ export abstract class LucidElement extends HTMLElement {
 }
 
 function coerce(value: string | null, type: PropType): unknown {
-  if (value === null) return type === "boolean" ? false : undefined;
-  if (type === "number") return Number(value);
-  if (type === "boolean") return value !== "false";
+  if (value === null) { return type === "boolean" ? false : undefined; }
+  if (type === "number") { return Number(value); }
+  if (type === "boolean") { return value !== "false"; }
   return value;
 }
 
 export function defineElement(tag: string, ctor: CustomElementConstructor): void {
-  if (!customElements.get(tag)) customElements.define(tag, ctor);
+  if (!customElements.get(tag)) { customElements.define(tag, ctor); }
 }

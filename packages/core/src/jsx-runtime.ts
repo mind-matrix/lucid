@@ -21,10 +21,10 @@ type ComponentFn = (props: Props) => Node;
 type TagOrComponent = string | ComponentFn | typeof Fragment;
 
 function appendChild(parent: Node, child: Child): void {
-  if (child == null || child === false || child === true) return;
+  if (child == null || child === false || child === true) { return; }
 
   if (Array.isArray(child)) {
-    for (const c of child) appendChild(parent, c);
+    for (const c of child) { appendChild(parent, c); }
     return;
   }
 
@@ -47,7 +47,7 @@ function appendChild(parent: Node, child: Child): void {
 }
 
 function setProp(el: Element, key: string, value: unknown): void {
-  if (key === "children" || key === "ref") return;
+  if (key === "children" || key === "ref") { return; }
 
   if (key === "style" && value && typeof value === "object") {
     Object.assign((el as HTMLElement).style, value);
@@ -98,18 +98,18 @@ export function jsx(tag: TagOrComponent, props: Props): Node {
     return frag;
   }
 
-  if (typeof tag === "function") return tag(props);
+  if (typeof tag === "function") { return tag(props); }
 
   const el = document.createElement(tag);
 
   for (const key in props) {
-    if (key === "children" || key === "ref") continue;
+    if (key === "children" || key === "ref") { continue; }
     setProp(el, key, props[key]);
   }
 
   appendChild(el, props.children);
 
-  if (typeof props.ref === "function") props.ref(el);
+  if (typeof props.ref === "function") { props.ref(el); }
   return el;
 }
 

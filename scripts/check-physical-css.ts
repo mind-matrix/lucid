@@ -27,7 +27,7 @@ function walk(dir: string): void {
     return;
   }
   for (const name of entries) {
-    if (IGNORE_DIRS.has(name)) continue;
+    if (IGNORE_DIRS.has(name)) { continue; }
     const full = join(dir, name);
     const stat = statSync(full);
     if (stat.isDirectory()) {
@@ -44,7 +44,7 @@ function scan(file: string): void {
   for (let i = 0; i < lines.length; i++) {
     const raw = lines[i]!;
     const stripped = raw.replace(/\/\*[\s\S]*?\*\//g, "");
-    if (stripped.trim().startsWith("//")) continue;
+    if (stripped.trim().startsWith("//")) { continue; }
     for (const rule of BANNED) {
       if (rule.pattern.test(stripped)) {
         violations.push({
@@ -58,7 +58,7 @@ function scan(file: string): void {
   }
 }
 
-for (const r of SCAN_ROOTS) walk(r);
+for (const r of SCAN_ROOTS) { walk(r); }
 
 if (violations.length === 0) {
   console.log("check-physical-css: OK — no banned properties");

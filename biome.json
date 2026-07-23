@@ -1,0 +1,37 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": [
+      "packages/**/*.ts",
+      "packages/**/*.tsx",
+      "apps/web/src/**/*.ts",
+      "apps/web/src/**/*.tsx",
+      "scripts/**/*.ts",
+      "tests/**/*.ts",
+      "build.ts",
+      "!**/dist/**",
+      "!**/node_modules/**",
+      "!**/__snapshots__/**",
+      "!**/.astro/**",
+      "!apps/web/src/generated/**"
+    ]
+  },
+  "formatter": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "none",
+      "style": {
+        "useBlockStatements": "error",
+        "useConst": "error",
+        "useTemplate": "error",
+        "noParameterAssign": "error"
+      },
+      "correctness": {
+        "noUnusedVariables": "error"
+      }
+    }
+  }
+}

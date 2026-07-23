@@ -31,8 +31,11 @@ jobs:
       - name: Check physical CSS (i18n gate)
         run: bun run check:physical-css
 
+      - name: Lint (Biome)
+        run: bun run lint
+
       - name: Build packages
-        run: bun run build
+        run: bun run build:packages
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4

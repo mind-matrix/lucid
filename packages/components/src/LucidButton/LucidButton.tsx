@@ -1,4 +1,5 @@
-import { LucidElement, defineElement, styleSheet, type PropDef } from "@mind-matrix/lucid-core";
+import { LucidElement, PropType, defineElement, styleSheet, type PropDef } from "@mind-matrix/lucid-core";
+import { EXTERNAL_LINK_REL, EXTERNAL_LINK_TARGET } from "../utilities";
 import buttonCss from "./LucidButton.css" with { type: "text" };
 
 export enum LucidButtonState {
@@ -13,14 +14,16 @@ export type LucidButtonStateDetail = {
   label?: string;
 };
 
+const DEFAULT_LOADING_TEXT = "Loading";
+
 export class LucidButton extends LucidElement {
   static override styles = [styleSheet(buttonCss)];
   static override props: Record<string, PropDef> = {
-    variant: { type: "string", default: "" },
-    disabled: { type: "boolean", default: false },
-    href: { type: "string", default: "" },
-    target: { type: "string", default: "" },
-    rel: { type: "string", default: "" },
+    variant: { type: PropType.STRING, default: "" },
+    disabled: { type: PropType.BOOLEAN, default: false },
+    href: { type: PropType.STRING, default: "" },
+    target: { type: PropType.STRING, default: "" },
+    rel: { type: PropType.STRING, default: "" },
   };
 
   variant: string = "";
@@ -47,16 +50,16 @@ export class LucidButton extends LucidElement {
   }
 
   setState(state: LucidButtonState, detail?: LucidButtonStateDetail): void {
-    if (state === this.#state && detail?.label === this.#stateLabel) return;
+    if (state === this.#state && detail?.label === this.#stateLabel) { return; }
     this.#state = state;
     this.#stateLabel = detail?.label;
     this.requestUpdate();
   }
 
   #computedRel(): string | undefined {
-    if (this.rel) return this.rel;
+    if (this.rel) { return this.rel; }
     // Safe default for external links: prevent tab-nabbing and referrer leaks.
-    if (this.target === "_blank") return "noopener noreferrer";
+    if (this.target === EXTERNAL_LINK_TARGET) { return EXTERNAL_LINK_REL; }
     return undefined;
   }
 
@@ -74,7 +77,7 @@ export class LucidButton extends LucidElement {
           <span
             class="lucid-btn-spinner"
             role="status"
-            aria-label={this.#stateLabel ?? "Loading"}
+            aria-label={this.#stateLabel ?? DEFAULT_LOADING_TEXT}
           />
         )}
         {isError && (

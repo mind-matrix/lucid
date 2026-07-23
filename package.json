@@ -8,18 +8,22 @@
     "examples/*"
   ],
   "scripts": {
-    "build": "bun run build.ts",
-    "build:web": "bun run build && bun run scripts/bundle-size.ts --write && cd apps/web && bun --bun astro build",
+    "build": "bun run verify && bun run build:packages && bun run build:web",
+    "build:packages": "bun run build.ts",
+    "build:web": "bun run build:packages && bun run scripts/bundle-size.ts --write && cd apps/web && bun --bun astro build",
     "dev": "cd apps/web && bun --bun astro dev",
     "test": "bun test",
     "typecheck": "tsc -b",
     "bundle-size": "bun run scripts/bundle-size.ts --report",
     "check:physical-css": "bun run scripts/check-physical-css.ts",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --write",
     "test:a11y": "playwright test --config=playwright.config.ts",
-    "verify": "bun run typecheck && bun run check:physical-css && bun run test:a11y"
+    "verify": "bun run typecheck && bun run check:physical-css && bun run lint && bun run test:a11y"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@biomejs/biome": "^2.5.5",
     "@playwright/test": "^1.61.1",
     "@types/bun": "latest",
     "@types/react": "^18",

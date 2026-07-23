@@ -79,7 +79,7 @@ test.describe("lucid-nav — accessibility", () => {
       const testid = await page.evaluate(() => {
         // Walk into shadow roots to find the actually-focused element.
         let el: Element | null = document.activeElement;
-        while (el?.shadowRoot?.activeElement) el = el.shadowRoot.activeElement;
+        while (el?.shadowRoot?.activeElement) { el = el.shadowRoot.activeElement; }
         // If we ended inside a shadow root, hop up to the host.
         // `closest()` doesn't cross shadow boundaries, so use getRootNode.
         const root = el?.getRootNode();
@@ -87,7 +87,7 @@ test.describe("lucid-nav — accessibility", () => {
           root instanceof ShadowRoot ? (root.host as HTMLElement) : el;
         return (host as HTMLElement | null)?.dataset?.testid ?? null;
       });
-      if (testid) visited.push(testid);
+      if (testid) { visited.push(testid); }
       await page.keyboard.press("Tab");
     }
     expect(visited).toEqual([
@@ -100,7 +100,7 @@ test.describe("lucid-nav — accessibility", () => {
 });
 
 function format(v: unknown[]): string {
-  if (!Array.isArray(v) || v.length === 0) return "no violations";
+  if (!Array.isArray(v) || v.length === 0) { return "no violations"; }
   return v
     .map(
       (x: any) =>

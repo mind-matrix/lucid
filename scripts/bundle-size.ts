@@ -40,7 +40,7 @@ const doWrite = args.has("--write") || args.size === 0;
 
 const fmt = (n: number) => (n < 1024 ? `${n} B` : `${(n / 1024).toFixed(2)} KB`);
 const fmtCompact = (n: number) => {
-  if (n < 1024) return `${n} B`;
+  if (n < 1024) { return `${n} B`; }
   const kb = n / 1024;
   return kb < 10 ? `${kb.toFixed(1)} KB` : `${Math.round(kb)} KB`;
 };
@@ -79,7 +79,7 @@ async function measureAll() {
     }
     for (const f of files.sort()) {
       const sizes = await measure(join(dir, f));
-      if (sizes) rows.push({ pkg, file: f, sizes });
+      if (sizes) { rows.push({ pkg, file: f, sizes }); }
     }
   }
   return { rows, missingPackages };
@@ -88,7 +88,7 @@ async function measureAll() {
 async function report() {
   const { rows, missingPackages } = await measureAll();
 
-  console.log(pad("file", 46) + pad("raw", 12) + pad("gzip", 12) + "brotli");
+  console.log(`${pad("file", 46) + pad("raw", 12) + pad("gzip", 12)}brotli`);
   console.log("-".repeat(78));
 
   const totals = { raw: 0, gzip: 0, brotli: 0 };
@@ -174,8 +174,12 @@ export const bundleSize: BundleSizeReport = {
   );
 }
 
-if (doReport) await report();
+if (doReport) {
+  await report();
+}
 if (doWrite) {
-  if (doReport) console.log(); // blank line between the two sections
+  if (doReport) {
+    console.log(); // blank line between the two sections
+  }
   await write();
 }

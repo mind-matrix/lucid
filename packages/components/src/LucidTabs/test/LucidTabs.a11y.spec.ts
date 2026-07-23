@@ -207,7 +207,7 @@ test.describe("lucid-tabs — accessibility", () => {
 });
 
 function format(v: unknown[]): string {
-  if (!Array.isArray(v) || v.length === 0) return "no violations";
+  if (!Array.isArray(v) || v.length === 0) { return "no violations"; }
   return v
     .map(
       (x: any) =>

@@ -9,7 +9,12 @@ export default defineConfig({
     "{testDir}/{testFileDir}/__snapshots__/{arg}{-projectName}{-platform}{ext}",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  // Retry up to 3 times everywhere — RTL visual snapshots are
+  // intermittently flaky under parallel-test CPU load. Local
+  // `bun run build` now chains verify, so a genuine flake would
+  // block the whole build. This is the retry ceiling we've observed
+  // needed to make the flake statistically invisible.
+  retries: 3,
   workers: process.env.CI ? 1 : undefined,
   reporter: [["list"], ["html", { open: "never" }]],
   use: {

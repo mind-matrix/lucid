@@ -46,7 +46,7 @@ for (const t of targets) {
 
     if (!result.success) {
       console.error(`[build] ${t.name} (${entry}) failed`);
-      for (const log of result.logs) console.error(log);
+      for (const log of result.logs) { console.error(log); }
       process.exit(1);
     }
   }

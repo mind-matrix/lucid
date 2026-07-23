@@ -3,6 +3,8 @@ import Base from "../layouts/Base.astro";
 import styles from "./components.module.css";
 import { MousePointerClick, Ban } from "lucide";
 import { iconToSvg } from "../lib/icon";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <Base
@@ -40,7 +42,7 @@ import { iconToSvg } from "../lib/icon";
 
       <h2>As a link (polymorphic)</h2>
       <div class={styles.demoRow}>
-        <lucid-button variant="ghost" href="/docs">In-app link</lucid-button>
+        <lucid-button variant="ghost" href={`${base}/docs`}>In-app link</lucid-button>
         <lucid-button
           variant="ghost"
           href="https://example.com"

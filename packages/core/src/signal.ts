@@ -12,16 +12,16 @@ export function signal<T>(initial: T): Signal<T> {
   const subs = new Set<Effect>();
 
   const read = (() => {
-    if (currentEffect) subs.add(currentEffect);
+    if (currentEffect) { subs.add(currentEffect); }
     return value;
   }) as Signal<T>;
 
   read.set = (next) => {
     const resolved =
       typeof next === "function" ? (next as (p: T) => T)(value) : next;
-    if (Object.is(resolved, value)) return;
+    if (Object.is(resolved, value)) { return; }
     value = resolved;
-    for (const s of [...subs]) s();
+    for (const s of [...subs]) { s(); }
   };
 
   read.subscribe = (fn) => {
@@ -38,7 +38,7 @@ export function signal<T>(initial: T): Signal<T> {
 export function effect(fn: () => void | (() => void)): () => void {
   let cleanup: void | (() => void);
   const run: Effect = () => {
-    if (typeof cleanup === "function") cleanup();
+    if (typeof cleanup === "function") { cleanup(); }
     const prev = currentEffect;
     currentEffect = run;
     try {
@@ -49,7 +49,7 @@ export function effect(fn: () => void | (() => void)): () => void {
   };
   run();
   return () => {
-    if (typeof cleanup === "function") cleanup();
+    if (typeof cleanup === "function") { cleanup(); }
   };
 }
 

@@ -45,7 +45,7 @@ export function createComponent<
 
     useEffect(() => {
       const el = localRef.current;
-      if (!el) return;
+      if (!el) { return; }
       const cleanups: Array<() => void> = [];
 
       for (const [reactName, domEvent] of Object.entries(events)) {
@@ -64,9 +64,9 @@ export function createComponent<
 
     useEffect(() => {
       const el = localRef.current;
-      if (!el) return;
+      if (!el) { return; }
       for (const [key, value] of Object.entries(rest)) {
-        if (key.startsWith("on") || key === "className" || key === "style") continue;
+        if (key.startsWith("on") || key === "className" || key === "style") { continue; }
         if (value != null && typeof value === "object") {
           (el as unknown as Record<string, unknown>)[key] = value;
         }
@@ -75,16 +75,16 @@ export function createComponent<
 
     const domProps: Record<string, unknown> = { ref: localRef };
     for (const [key, value] of Object.entries(rest)) {
-      if (key.startsWith("on")) continue;
-      if (value == null || typeof value === "object") continue;
+      if (key.startsWith("on")) { continue; }
+      if (value == null || typeof value === "object") { continue; }
       if (typeof value === "boolean") {
-        if (value) domProps[key] = "";
+        if (value) { domProps[key] = ""; }
         continue;
       }
       domProps[key] = value;
     }
-    if (rest.className) domProps.className = rest.className;
-    if (rest.style) domProps.style = rest.style;
+    if (rest.className) { domProps.className = rest.className; }
+    if (rest.style) { domProps.style = rest.style; }
 
     return createElement(tagName, domProps, children as ReactNode);
   });

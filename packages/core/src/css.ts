@@ -8,22 +8,22 @@ export function css(
   ...values: unknown[]
 ): CSSResult {
   const cached = tagCache.get(strings);
-  if (cached && values.length === 0) return cached;
+  if (cached && values.length === 0) { return cached; }
 
   let text = "";
   for (let i = 0; i < strings.length; i++) {
     text += strings[i];
-    if (i < values.length) text += String(values[i]);
+    if (i < values.length) { text += String(values[i]); }
   }
 
   const result = styleSheet(text);
-  if (values.length === 0) tagCache.set(strings, result);
+  if (values.length === 0) { tagCache.set(strings, result); }
   return result;
 }
 
 export function styleSheet(text: string): CSSResult {
   const cached = textCache.get(text);
-  if (cached) return cached;
+  if (cached) { return cached; }
 
   const sheet = new CSSStyleSheet();
   sheet.replaceSync(text);

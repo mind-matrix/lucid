@@ -1,4 +1,4 @@
-import { LucidElement, defineElement, styleSheet, type PropDef } from "@mind-matrix/lucid-core";
+import { LucidElement, PropType, defineElement, styleSheet, type PropDef } from "@mind-matrix/lucid-core";
 import cardCss from "./LucidCard.css" with { type: "text" };
 
 export type LucidCardVariant = "outlined" | "filled" | "elevated" | "";
@@ -6,9 +6,9 @@ export type LucidCardVariant = "outlined" | "filled" | "elevated" | "";
 export class LucidCard extends LucidElement {
   static override styles = [styleSheet(cardCss)];
   static override props: Record<string, PropDef> = {
-    variant: { type: "string", default: "" },
-    clickable: { type: "boolean", default: false },
-    disabled: { type: "boolean", default: false },
+    variant: { type: PropType.STRING, default: "" },
+    clickable: { type: PropType.BOOLEAN, default: false },
+    disabled: { type: PropType.BOOLEAN, default: false },
   };
 
   variant: LucidCardVariant = "";
@@ -24,7 +24,7 @@ export class LucidCard extends LucidElement {
       }
     });
     this.addEventListener("keydown", (e) => {
-      if (!this.clickable || this.disabled) return;
+      if (!this.clickable || this.disabled) { return; }
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         this.click();

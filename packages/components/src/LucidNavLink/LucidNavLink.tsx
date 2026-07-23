@@ -1,19 +1,21 @@
 import {
   LucidElement,
+  PropType,
   defineElement,
   styleSheet,
   type PropDef,
 } from "@mind-matrix/lucid-core";
+import { EXTERNAL_LINK_REL, EXTERNAL_LINK_TARGET } from "../utilities";
 import navLinkCss from "./LucidNavLink.css" with { type: "text" };
 
 export class LucidNavLink extends LucidElement {
   static override styles = [styleSheet(navLinkCss)];
   static override props: Record<string, PropDef> = {
-    href: { type: "string", default: "" },
-    target: { type: "string", default: "" },
-    rel: { type: "string", default: "" },
-    active: { type: "boolean", default: false },
-    disabled: { type: "boolean", default: false },
+    href: { type: PropType.STRING, default: "" },
+    target: { type: PropType.STRING, default: "" },
+    rel: { type: PropType.STRING, default: "" },
+    active: { type: PropType.BOOLEAN, default: false },
+    disabled: { type: PropType.BOOLEAN, default: false },
   };
 
   href: string = "";
@@ -23,8 +25,8 @@ export class LucidNavLink extends LucidElement {
   disabled: boolean = false;
 
   #computedRel(): string | undefined {
-    if (this.rel) return this.rel;
-    if (this.target === "_blank") return "noopener noreferrer";
+    if (this.rel) { return this.rel; }
+    if (this.target === EXTERNAL_LINK_TARGET) { return EXTERNAL_LINK_REL; }
     return undefined;
   }
 

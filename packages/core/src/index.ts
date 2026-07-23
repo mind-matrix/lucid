@@ -20,6 +20,7 @@ export const {
 export const {
   LucidElement,
   defineElement,
+  PropType
 } = elementMod;
 
 export const {
@@ -34,6 +35,6 @@ export const {
 
 export type { Signal } from "./signal.ts";
 export type { CSSResult } from "./css.ts";
-export type { ElementOptions, PropDef, PropType } from "./element.ts";
+export type { ElementOptions, PropDef } from "./element.ts";
 export type { RovingOrientation, RovingListOptions } from "./roving-list.ts";
 export type { JSX, Child, Props } from "./jsx-runtime.ts";

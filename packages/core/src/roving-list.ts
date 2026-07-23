@@ -64,13 +64,13 @@ export abstract class LucidRovingList extends LucidElement {
     super.disconnectedCallback();
     this.removeEventListener("keydown", this.#onKeyDown);
     this.removeEventListener("focusin", this.#onFocusIn);
-    if (this.#typeaheadTimer) clearTimeout(this.#typeaheadTimer);
+    if (this.#typeaheadTimer) { clearTimeout(this.#typeaheadTimer); }
   }
 
   /** Ensure exactly one item has tabindex=0. Safe to call after DOM mutations. */
   syncRovingTabIndex(): void {
     const items = this.getRovingItems();
-    if (items.length === 0) return;
+    if (items.length === 0) { return; }
     const activeIndex = items.findIndex((it) => it.tabIndex === 0);
     const active = activeIndex >= 0 ? activeIndex : 0;
     for (let i = 0; i < items.length; i++) {
@@ -81,9 +81,9 @@ export abstract class LucidRovingList extends LucidElement {
   #onFocusIn = (e: Event) => {
     const items = this.getRovingItems();
     const target = e.target as HTMLElement | null;
-    if (!target) return;
+    if (!target) { return; }
     const idx = items.indexOf(target);
-    if (idx === -1) return;
+    if (idx === -1) { return; }
     for (let i = 0; i < items.length; i++) {
       items[i]!.tabIndex = i === idx ? 0 : -1;
     }
@@ -92,13 +92,13 @@ export abstract class LucidRovingList extends LucidElement {
   #onKeyDown = (e: KeyboardEvent) => {
     const opts = this.#options();
     const items = this.getRovingItems();
-    if (items.length === 0) return;
+    if (items.length === 0) { return; }
 
     const currentIndex = items.indexOf(document.activeElement as HTMLElement);
-    if (currentIndex === -1) return;
+    if (currentIndex === -1) { return; }
 
     const next = this.#nextIndex(e.key, currentIndex, items.length, opts);
-    if (next === null) return;
+    if (next === null) { return; }
 
     e.preventDefault();
     this.#focusItem(items, next);
@@ -116,26 +116,26 @@ export abstract class LucidRovingList extends LucidElement {
       opts.orientation === "vertical" || opts.orientation === "both";
 
     let delta = 0;
-    if (horizontal && key === "ArrowRight") delta = 1;
-    else if (horizontal && key === "ArrowLeft") delta = -1;
-    else if (vertical && key === "ArrowDown") delta = 1;
-    else if (vertical && key === "ArrowUp") delta = -1;
-    else if (key === "Home") return 0;
-    else if (key === "End") return length - 1;
+    if (horizontal && key === "ArrowRight") { delta = 1; }
+    else if (horizontal && key === "ArrowLeft") { delta = -1; }
+    else if (vertical && key === "ArrowDown") { delta = 1; }
+    else if (vertical && key === "ArrowUp") { delta = -1; }
+    else if (key === "Home") { return 0; }
+    else if (key === "End") { return length - 1; }
     else if (opts.typeahead && key.length === 1 && /\S/.test(key)) {
       return this.#typeahead(key, current);
-    } else return null;
+    } else { return null; }
 
     let next = current + delta;
-    if (next < 0) next = opts.wrap ? length - 1 : 0;
-    else if (next >= length) next = opts.wrap ? 0 : length - 1;
+    if (next < 0) { next = opts.wrap ? length - 1 : 0; }
+    else if (next >= length) { next = opts.wrap ? 0 : length - 1; }
     return next;
   }
 
   #typeahead(char: string, current: number): number | null {
     const opts = this.#options();
     this.#typeaheadQuery += char.toLowerCase();
-    if (this.#typeaheadTimer) clearTimeout(this.#typeaheadTimer);
+    if (this.#typeaheadTimer) { clearTimeout(this.#typeaheadTimer); }
     this.#typeaheadTimer = setTimeout(() => {
       this.#typeaheadQuery = "";
     }, opts.typeaheadTimeout);
@@ -146,7 +146,7 @@ export abstract class LucidRovingList extends LucidElement {
     for (let step = 1; step <= items.length; step++) {
       const idx = (current + step) % items.length;
       const text = items[idx]!.textContent?.trim().toLowerCase() ?? "";
-      if (text.startsWith(query)) return idx;
+      if (text.startsWith(query)) { return idx; }
     }
     return null;
   }
