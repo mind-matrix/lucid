@@ -1,8 +1,8 @@
 /**
  * Bundle size numbers, generated at build time by
- * `scripts/measure-bundle-size.ts`. Do not edit by hand — regenerated
- * on every `bun run build:landing`. In dev, these values may be stale
- * until the packages are rebuilt.
+ * `scripts/bundle-size.ts --write`. Do not edit by hand —
+ * regenerated on every `bun run build:landing`. In dev, these
+ * values may be stale until the packages are rebuilt.
  */
 
 export type BundleSize = {
@@ -19,7 +19,7 @@ export type BundleSizeReport = {
 };
 
 export const bundleSize: BundleSizeReport = {
-  componentsGzip: { formatted: "3.1 KB", bytes: 3170 },
-  componentsAndRuntimeGzip: { formatted: "5.7 KB", bytes: 5787 },
-  generatedAt: "2026-07-23T03:37:33.564Z",
+  componentsGzip: { formatted: "3.1 KB", bytes: 3169 },
+  componentsAndRuntimeGzip: { formatted: "5.7 KB", bytes: 5786 },
+  generatedAt: "2026-07-23T04:48:31.187Z",
 };

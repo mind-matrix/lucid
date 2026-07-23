@@ -34,7 +34,7 @@ const useBuiltPackages: BunPlugin = {
 
 // Measure library bundle size and write apps/landing/src/generated/bundle-size.ts.
 // Runs before Bun.build so the landing bundle picks up the freshly-generated module.
-await Bun.$`bun ${join(ROOT, "scripts/measure-bundle-size.ts")}`;
+await Bun.$`bun ${join(ROOT, "scripts/bundle-size.ts")} --write`;
 
 await rm(OUT, { recursive: true, force: true });
 

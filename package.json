@@ -13,7 +13,7 @@
     "dev": "bun --hot apps/landing/index.ts",
     "test": "bun test",
     "typecheck": "tsc -b",
-    "size": "bun run scripts/size.ts",
+    "bundle-size": "bun run scripts/bundle-size.ts --report",
     "check:physical-css": "bun run scripts/check-physical-css.ts",
     "test:a11y": "playwright test --config=playwright.config.ts",
     "verify": "bun run typecheck && bun run check:physical-css && bun run test:a11y"
