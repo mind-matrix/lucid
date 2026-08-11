@@ -27,8 +27,8 @@ const PACKAGES = ["core", "components", "react"] as const;
 // What a real consumer downloads to run a lucid component in production:
 //   - packages/components/dist/index.js  (component classes + their CSS text)
 //   - packages/core/dist/index.js        (LucidElement, signals, css helpers)
-//   - packages/core/dist/jsx-runtime.js  (production JSX runtime)
-// jsx-dev-runtime.js is only used by TSC during type-checking / dev.
+//   - packages/core/dist/jsx-runtime.js  (JSX runtime; also serves the
+//     ./jsx-dev-runtime subpath, since jsxDEV is an alias for jsx)
 const CONSUMER_FILES = {
   core: ["index.js", "jsx-runtime.js"],
   components: ["index.js"],

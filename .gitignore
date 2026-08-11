@@ -41,3 +41,6 @@ test-results
 
 # Astro
 .astro
+
+# Skill installer's per-machine config
+.skills-install.json

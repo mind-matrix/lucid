@@ -7,6 +7,9 @@
   color: var(--lucid-color-fg);
   padding-block: var(--lucid-tab-panel-padding-block);
   padding-inline: var(--lucid-tab-panel-padding-inline);
+  /* Panel content is free to flow across pages (docs prose can be long),
+   * but it should never be orphaned from the tablist that labels it. */
+  break-before: avoid;
 }
 
 :host([hidden]) {

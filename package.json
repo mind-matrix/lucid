@@ -20,6 +20,7 @@
     "lint:fix": "biome lint --write",
     "release": "bun run scripts/release.ts",
     "release:dry": "bun run scripts/release.ts --dry-run",
+    "setup:skills": "bun run scripts/setup-skills.ts",
     "test:a11y": "playwright test --config=playwright.config.ts",
     "verify": "bun run typecheck && bun run check:physical-css && bun run lint && bun run test:a11y"
   },
@@ -29,6 +30,7 @@
     "@playwright/test": "^1.61.1",
     "@types/bun": "latest",
     "@types/react": "^18",
+    "lightningcss": "^1.33.0",
     "typescript": "^5"
   }
 }

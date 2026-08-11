@@ -40,8 +40,8 @@
       "import": "./dist/jsx-runtime.js"
     },
     "./jsx-dev-runtime": {
-      "types": "./src/jsx-dev-runtime.ts",
-      "import": "./dist/jsx-dev-runtime.js"
+      "types": "./src/jsx-runtime.ts",
+      "import": "./dist/jsx-runtime.js"
     },
     "./tokens.css": "./src/tokens.css"
   },

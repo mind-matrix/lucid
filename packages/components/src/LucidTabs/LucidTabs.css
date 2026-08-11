@@ -31,6 +31,9 @@
   gap: var(--lucid-tabs-gap);
   border-block-end: var(--lucid-tabs-tablist-border-width) solid
     var(--lucid-tabs-tablist-border-color);
+  /* A tablist split across a page break leaves orphaned tab labels
+   * with no panel — keep the whole strip together in paged media. */
+  break-inside: avoid;
 }
 
 :host([orientation="vertical"]) .tablist {

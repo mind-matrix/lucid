@@ -115,6 +115,17 @@ export function jsx(tag: TagOrComponent, props: Props): Node {
 
 export const jsxs = jsx;
 
+/**
+ * Development-mode JSX entrypoint (`jsx: "react-jsxdev"` in tsconfig).
+ *
+ * Lucid's runtime builds real DOM nodes and has no dev-only behaviour to
+ * add — no key warnings, no validation pass — so `jsxDEV` is a plain
+ * alias for `jsx`. Exporting it from here (rather than a separate
+ * `jsx-dev-runtime` module) means the `./jsx-dev-runtime` subpath can
+ * resolve to this same file and we don't publish a duplicate bundle.
+ */
+export const jsxDEV = jsx;
+
 export namespace JSX {
   export type Element = Node;
   export interface ElementChildrenAttribute {

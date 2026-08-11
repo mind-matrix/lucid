@@ -16,11 +16,9 @@
   font-family: var(--lucid-font-family);
 }
 
-/* Vertical tabs stretch to fill the tablist column so their selection
- * indicator (a vertical bar on the inline-end edge) aligns with the
- * tablist's border. data-orientation is propagated by <lucid-tabs>. */
 :host([data-orientation="vertical"]) {
   display: block;
+  width: 100%;
 }
 
 :host([data-orientation="vertical"]) [part="control"] {

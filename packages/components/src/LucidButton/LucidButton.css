@@ -47,6 +47,13 @@
     transform var(--lucid-btn-transition-duration);
   user-select: none;
   text-decoration: none;
+  /* Preserve variant fills when printing. Browsers strip background
+   * colours by default, which erased the primary button's indigo fill
+   * and rendered it as bare grey text on paper. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+  /* A button should never be sliced across a page break. */
+  break-inside: avoid;
 }
 
 [part="control"]:focus-visible {

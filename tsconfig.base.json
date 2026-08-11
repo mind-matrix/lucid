@@ -24,7 +24,7 @@
     "paths": {
       "@mind-matrix/lucid-core": ["./packages/core/src/index.ts"],
       "@mind-matrix/lucid-core/jsx-runtime": ["./packages/core/src/jsx-runtime.ts"],
-      "@mind-matrix/lucid-core/jsx-dev-runtime": ["./packages/core/src/jsx-dev-runtime.ts"],
+      "@mind-matrix/lucid-core/jsx-dev-runtime": ["./packages/core/src/jsx-runtime.ts"],
       "@mind-matrix/lucid-components": ["./packages/components/src/index.ts"],
       "@mind-matrix/lucid-react": ["./packages/react/src/index.ts"]
     }

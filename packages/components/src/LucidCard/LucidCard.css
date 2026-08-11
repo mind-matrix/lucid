@@ -47,6 +47,10 @@
   background: var(--lucid-card-bg);
   block-size: 100%;
   box-sizing: border-box;
+  /* Keep a card whole when the page is paginated (print / paged media).
+   * Without this the browser happily slices a card across a page break,
+   * leaving the icon on one page and the body text on the next. */
+  break-inside: avoid;
 }
 
 :host([variant="outlined"]) .lucid-card,

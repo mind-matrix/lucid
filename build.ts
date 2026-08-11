@@ -1,5 +1,6 @@
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
+import { compressComponentCss } from "./scripts/plugins/compress-component-css.ts";
 
 const ROOT = import.meta.dir;
 
@@ -7,11 +8,10 @@ const targets = [
   {
     name: "@mind-matrix/lucid-core",
     dir: join(ROOT, "packages/core"),
-    entrypoints: [
-      "src/index.ts",
-      "src/jsx-runtime.ts",
-      "src/jsx-dev-runtime.ts",
-    ],
+    // `jsx-dev-runtime` is intentionally absent: `jsxDEV` is exported from
+    // jsx-runtime.ts and the package export map points both subpaths at that
+    // one bundle, so we don't ship a duplicate ~1.5 KB file.
+    entrypoints: ["src/index.ts", "src/jsx-runtime.ts"],
   },
   {
     name: "@mind-matrix/lucid-components",
@@ -42,6 +42,7 @@ for (const t of targets) {
       minify: true,
       sourcemap: "linked",
       external: "external" in t ? [...t.external] : [],
+      plugins: [compressComponentCss],
     });
 
     if (!result.success) {
