@@ -39,6 +39,15 @@ jobs:
         # Deploys must fail if any test fails, so we install the browser here.
         run: bunx playwright install --with-deps chromium
 
+      # `bun run build` runs the visual suite strictly. A component added on
+      # macOS has no Linux baseline until the Verify workflow generates and
+      # commits one — and Verify runs in parallel with this job, on the same
+      # commit, so its commit lands too late to help here. Without this pass
+      # every new component would fail one deploy. Verify remains the actual
+      # visual gate; this only stops a missing file from blocking a deploy.
+      - name: Create any missing Linux baselines
+        run: bunx playwright test --update-snapshots=missing || true
+
       - name: Detect base path
         id: base
         run: |

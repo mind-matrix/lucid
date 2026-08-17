@@ -47,37 +47,31 @@ jobs:
       - name: Install Playwright chromium
         run: bunx playwright install --with-deps chromium
 
-      # Check whether Linux baselines have ever been committed. If not, this
-      # is the first CI run on Linux — we bootstrap baselines and pass. On
-      # every subsequent run baselines already exist and we compare strictly.
-      - name: Detect Linux baselines
-        id: baselines
-        run: |
-          if compgen -G "packages/components/src/**/__snapshots__/*-chromium-linux.png" > /dev/null; then
-            echo "state=present" >> "$GITHUB_OUTPUT"
-          else
-            echo "state=absent" >> "$GITHUB_OUTPUT"
-          fi
+      # Baselines are per-platform, and they are authored on whatever machine
+      # the developer used — so a component added on macOS arrives with no
+      # Linux baseline. This pass creates only the *missing* ones.
+      #
+      # `=missing` is load-bearing: it never touches a baseline that already
+      # exists, so a genuine visual regression cannot be silently rebaselined
+      # here. Missing snapshots are still reported as failures by design,
+      # which is why the pass is allowed to fail.
+      - name: Create any missing Linux baselines
+        run: bunx playwright test --update-snapshots=missing || true
 
-      - name: Bootstrap missing Linux baselines
-        if: steps.baselines.outputs.state == 'absent'
-        run: bunx playwright test --update-snapshots
-
+      # The real gate. `=none` forbids writing snapshots at all, so this can
+      # only pass by matching what is on disk.
       - name: Accessibility + visual regression (strict)
-        if: steps.baselines.outputs.state == 'present'
-        run: bunx playwright test
+        run: bunx playwright test --update-snapshots=none
 
-      - name: Commit generated Linux baselines
-        if: |
-          steps.baselines.outputs.state == 'absent' &&
-          github.event_name == 'push' &&
-          github.ref == 'refs/heads/master'
+      - name: Commit new Linux baselines
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add packages/components/src/**/__snapshots__/*-chromium-linux.png
+          # Two directory levels — baselines live in <Component>/test/__snapshots__.
+          git add "packages/components/src/*/test/__snapshots__/*-chromium-linux.png"
           if ! git diff --cached --quiet; then
-            git commit -m "chore(visual): bootstrap Linux baselines [skip ci]"
+            git commit -m "chore(visual): add Linux baselines [skip ci]"
             git push
           fi
 
