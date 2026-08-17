@@ -1,0 +1,71 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-option> — one option inside a <lucid-select> listbox.
+ *
+ * Two distinct visual states, easy to conflate:
+ *   [selected]  the currently chosen value (persistent)
+ *   [active]    the keyboard-highlighted row while the listbox is
+ *               open (transient — moves with arrow keys)
+ * Both can be true at once.
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-option-padding-block: var(--lucid-space-2);
+  --lucid-option-padding-inline: var(--lucid-space-3);
+  --lucid-option-color: var(--lucid-color-fg);
+  --lucid-option-bg-active: var(--lucid-color-surface-subtle-hover);
+  --lucid-option-color-selected: var(--lucid-color-primary);
+  --lucid-option-check-size: 1em;
+  --lucid-option-gap: var(--lucid-space-2);
+
+  display: block;
+  font-family: var(--lucid-font-family);
+}
+
+[part="control"] {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--lucid-option-gap);
+  padding-block: var(--lucid-option-padding-block);
+  padding-inline: var(--lucid-option-padding-inline);
+  color: var(--lucid-option-color);
+  font-size: var(--lucid-font-size-md);
+  cursor: pointer;
+  user-select: none;
+  /* Never split an option row across a printed page. */
+  break-inside: avoid;
+}
+
+/* Keyboard-highlighted row. Pointer hover mirrors it so mouse and
+ * keyboard users see the same affordance. */
+:host([active]) [part="control"],
+:host(:not([aria-disabled="true"])) [part="control"]:hover {
+  background: var(--lucid-option-bg-active);
+}
+
+:host([selected]) [part="control"] {
+  color: var(--lucid-option-color-selected);
+  font-weight: var(--lucid-font-weight-medium);
+}
+
+/* Checkmark shown only for the selected option. Inline SVG in the
+ * shadow tree, so it inherits `currentColor` from the row. */
+.check {
+  display: none;
+  inline-size: var(--lucid-option-check-size);
+  block-size: var(--lucid-option-check-size);
+}
+
+:host([selected]) .check {
+  display: block;
+}
+
+:host([aria-disabled="true"]) [part="control"] {
+  cursor: not-allowed;
+  opacity: var(--lucid-opacity-disabled);
+}
+
+:host([hidden]) {
+  display: none;
+}

@@ -1,6 +1,7 @@
 import button from "../packages/components/src/LucidButton/test/LucidButton.fixture.html";
 import card from "../packages/components/src/LucidCard/test/LucidCard.fixture.html";
 import nav from "../packages/components/src/LucidNav/test/LucidNav.fixture.html";
+import select from "../packages/components/src/LucidSelect/test/LucidSelect.fixture.html";
 import tabs from "../packages/components/src/LucidTabs/test/LucidTabs.fixture.html";
 
 const server = Bun.serve({
@@ -9,6 +10,7 @@ const server = Bun.serve({
     "/button": button,
     "/card": card,
     "/nav": nav,
+    "/select": select,
     "/tabs": tabs,
   },
 });

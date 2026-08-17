@@ -1,0 +1,201 @@
+/* ─────────────────────────────────────────────────────────────
+ * <lucid-select> — trigger + listbox popup.
+ *
+ * The popup is a `popover`, so it paints in the top layer and no
+ * ancestor's `overflow: hidden` or `z-index` can hide it. Top-layer
+ * boxes position against the viewport, so the component measures the
+ * trigger and publishes the results as inline `px` values plus a
+ * `data-placement` flag; every *distance* stays here as a token, and
+ * this file does the arithmetic.
+ * ───────────────────────────────────────────────────────────── */
+
+:host {
+  --lucid-select-min-inline-size: 12rem;
+  --lucid-select-padding-block: var(--lucid-space-2);
+  --lucid-select-padding-inline: var(--lucid-space-3);
+  --lucid-select-radius: var(--lucid-radius-md);
+  --lucid-select-border-width: var(--lucid-border-width-sm);
+  --lucid-select-border-width-invalid: var(--lucid-border-width-md);
+  --lucid-select-border-color: var(--lucid-color-border);
+  --lucid-select-border-color-open: var(--lucid-color-primary);
+  --lucid-select-border-color-invalid: var(--lucid-color-danger);
+  --lucid-select-bg: var(--lucid-color-bg);
+  --lucid-select-bg-hover: var(--lucid-color-surface-subtle-hover);
+  --lucid-select-color: var(--lucid-color-fg);
+  /* Deliberately --lucid-color-fg-body, not --lucid-color-muted: muted
+   * (#64748b) only reaches 4.09:1 against the trigger's hover background,
+   * failing WCAG AA for normal text. fg-body clears 4.5:1 in both states. */
+  --lucid-select-placeholder-color: var(--lucid-color-fg-body);
+  --lucid-select-gap: var(--lucid-space-2);
+  --lucid-select-indicator-size: 1em;
+  --lucid-select-transition-duration: var(--lucid-btn-transition-duration, 120ms);
+
+  --lucid-select-listbox-bg: var(--lucid-color-bg);
+  --lucid-select-listbox-radius: var(--lucid-radius-md);
+  --lucid-select-listbox-shadow: var(--lucid-shadow-md);
+  --lucid-select-listbox-max-block-size: 16rem;
+  /* Floor for the viewport clamp below — a popup squeezed to nothing is
+   * worse than one that overhangs slightly. */
+  --lucid-select-listbox-min-block-size: 6rem;
+  --lucid-select-listbox-offset: var(--lucid-space-1);
+  --lucid-select-listbox-viewport-margin: var(--lucid-space-2);
+  --lucid-select-listbox-padding-block: var(--lucid-space-1);
+  /* Only reachable on browsers without the Popover API; in the top layer
+   * stacking is decided by insertion order, not z-index. */
+  --lucid-select-listbox-z-index: 10;
+
+  display: inline-block;
+  min-inline-size: var(--lucid-select-min-inline-size);
+  font-family: var(--lucid-font-family);
+}
+
+/* ─── Trigger ─────────────────────────────────────────────── */
+
+[part="control"] {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--lucid-select-gap);
+  inline-size: 100%;
+  padding-block: var(--lucid-select-padding-block);
+  padding-inline: var(--lucid-select-padding-inline);
+  border: var(--lucid-select-border-width) solid
+    var(--lucid-select-border-color);
+  border-radius: var(--lucid-select-radius);
+  background: var(--lucid-select-bg);
+  color: var(--lucid-select-color);
+  font-size: var(--lucid-font-size-md);
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+  text-align: start;
+  transition:
+    background-color var(--lucid-select-transition-duration),
+    border-color var(--lucid-select-transition-duration);
+  /* Preserve the control's fill and border when printing. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+  break-inside: avoid;
+}
+
+/* Suppress the UA outline first, then re-apply for keyboard focus.
+ * Order matters: :focus and :focus-visible have equal specificity, so
+ * :focus-visible MUST come second for its outline to win. */
+[part="control"]:focus {
+  outline: none;
+}
+
+[part="control"]:focus-visible {
+  outline: var(--lucid-outline-width) solid var(--lucid-color-primary);
+  outline-offset: var(--lucid-outline-offset);
+}
+
+:host(:not([data-disabled])) [part="control"]:hover {
+  background: var(--lucid-select-bg-hover);
+}
+
+:host([open]) [part="control"] {
+  border-color: var(--lucid-select-border-color-open);
+}
+
+/* After the [open] rule — equal specificity, so the invalid cue must come
+ * later to survive being opened. The error *text* is the platform's
+ * validation message; this border is a supplementary cue only. */
+:host([data-invalid]) [part="control"] {
+  border-width: var(--lucid-select-border-width-invalid);
+  border-color: var(--lucid-select-border-color-invalid);
+}
+
+:host([data-disabled]) [part="control"] {
+  cursor: not-allowed;
+  opacity: var(--lucid-opacity-disabled);
+}
+
+[part="value"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host([data-placeholder]) [part="value"] {
+  color: var(--lucid-select-placeholder-color);
+}
+
+/* ─── Indicator ───────────────────────────────────────────── */
+
+[part="indicator"] {
+  inline-size: var(--lucid-select-indicator-size);
+  block-size: var(--lucid-select-indicator-size);
+  transition: transform var(--lucid-select-transition-duration);
+}
+
+:host([open]) [part="indicator"] {
+  transform: rotate(180deg);
+}
+
+/* ─── Listbox popup ───────────────────────────────────────── */
+
+[part="listbox"] {
+  /* `position: fixed` is what actually places the popup, in the top layer
+   * and out of it, which is why the fallback path still escapes an
+   * ancestor's `overflow: hidden`. Insets are supplied inline by the
+   * component; these reset the UA's `[popover] { inset: 0; margin: auto }`
+   * centring so the element never flashes mid-viewport. */
+  position: fixed;
+  inset-block: auto;
+  inset-inline: auto;
+  z-index: var(--lucid-select-listbox-z-index);
+  /* The component owns visibility outright rather than leaning on
+   * `:popover-open`, so the fallback path behaves identically. */
+  display: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding-block: var(--lucid-select-listbox-padding-block);
+  padding-inline: 0;
+  max-block-size: min(
+    var(--lucid-select-listbox-max-block-size),
+    max(
+      var(--lucid-select-listbox-min-block-size),
+      calc(
+        var(--lucid-select-available-block-size, 100vh) -
+        var(--lucid-select-listbox-offset) -
+        var(--lucid-select-listbox-viewport-margin)
+      )
+    )
+  );
+  overflow-y: auto;
+  background: var(--lucid-select-listbox-bg);
+  border: var(--lucid-select-border-width) solid
+    var(--lucid-select-border-color);
+  border-radius: var(--lucid-select-listbox-radius);
+  box-shadow: var(--lucid-select-listbox-shadow);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+[part="listbox"][data-open] {
+  display: block;
+}
+
+/* The gap between trigger and popup is a margin rather than part of the
+ * inline inset, so the token stays in CSS and works for both placements. */
+[part="listbox"][data-placement="block-end"] {
+  margin-block-start: var(--lucid-select-listbox-offset);
+}
+
+[part="listbox"][data-placement="block-start"] {
+  margin-block-end: var(--lucid-select-listbox-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [part="control"],
+  [part="indicator"] {
+    transition-duration: 0.01ms;
+  }
+}
+
+:host([hidden]) {
+  display: none;
+}

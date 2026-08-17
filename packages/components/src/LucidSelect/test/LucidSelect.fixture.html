@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>lucid-select — fixture</title>
+    <link rel="stylesheet" href="../../../../core/src/tokens.css" />
+    <style>
+      body {
+        font-family: var(--lucid-font-family);
+        color: var(--lucid-color-fg);
+        background: var(--lucid-color-bg);
+        padding: var(--lucid-space-6);
+        display: grid;
+        gap: var(--lucid-space-6);
+        /* Room for the popup to render inside screenshots. */
+        min-block-size: 32rem;
+        align-content: start;
+      }
+      .row {
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: start;
+        gap: var(--lucid-space-4);
+        align-items: start;
+      }
+      h2 {
+        font-size: var(--lucid-font-size-md);
+        color: var(--lucid-color-muted);
+        margin: 0;
+      }
+      fieldset,
+      legend {
+        all: unset;
+      }
+      legend {
+        display: block;
+        font-size: var(--lucid-font-size-sm);
+        color: var(--lucid-color-muted);
+        margin-block-end: var(--lucid-space-2);
+      }
+      /* Worst case for a popup: clips overflow AND establishes a containing
+       * block for fixed descendants, so only the top layer escapes. */
+      .clipper {
+        overflow: hidden;
+        block-size: 3.5rem;
+        transform: translate(0);
+        border: var(--lucid-border-width-sm) dashed var(--lucid-color-border);
+        padding: var(--lucid-space-2);
+      }
+    </style>
+    <script type="module" src="./LucidSelect.fixture.ts"></script>
+  </head>
+  <body>
+    <h2>default (no value — placeholder shown)</h2>
+    <div class="row">
+      <lucid-select label="Framework" data-testid="sel-empty">
+        <lucid-option value="astro" data-testid="opt-astro">Astro</lucid-option>
+        <lucid-option value="react" data-testid="opt-react">React</lucid-option>
+        <lucid-option value="svelte" data-testid="opt-svelte">Svelte</lucid-option>
+        <lucid-option value="vue" data-testid="opt-vue">Vue</lucid-option>
+      </lucid-select>
+    </div>
+
+    <h2>preselected value</h2>
+    <div class="row">
+      <lucid-select label="Runtime" value="bun" data-testid="sel-preselected">
+        <lucid-option value="bun">Bun</lucid-option>
+        <lucid-option value="deno">Deno</lucid-option>
+        <lucid-option value="node">Node</lucid-option>
+      </lucid-select>
+    </div>
+
+    <h2>with a disabled option</h2>
+    <div class="row">
+      <lucid-select label="Tier" data-testid="sel-disabled-option">
+        <lucid-option value="free" data-testid="opt-free">Free</lucid-option>
+        <lucid-option value="pro" disabled data-testid="opt-pro">Pro (soon)</lucid-option>
+        <lucid-option value="team" data-testid="opt-team">Team</lucid-option>
+      </lucid-select>
+    </div>
+
+    <h2>disabled select</h2>
+    <div class="row">
+      <lucid-select label="Locked" value="one" disabled data-testid="sel-disabled">
+        <lucid-option value="one">One</lucid-option>
+        <lucid-option value="two">Two</lucid-option>
+      </lucid-select>
+    </div>
+
+    <h2>custom placeholder</h2>
+    <div class="row">
+      <lucid-select
+        label="Region"
+        placeholder="Choose a region…"
+        data-testid="sel-placeholder"
+      >
+        <lucid-option value="us">us-east-1</lucid-option>
+        <lucid-option value="eu">eu-west-1</lucid-option>
+      </lucid-select>
+    </div>
+
+    <h2>inside a clipping, fixed-containing-block ancestor</h2>
+    <div class="clipper" data-testid="clipper">
+      <lucid-select label="Clipped" data-testid="sel-clipped">
+        <lucid-option value="one" data-testid="opt-clipped-one">One</lucid-option>
+        <lucid-option value="two">Two</lucid-option>
+        <lucid-option value="three" data-testid="opt-clipped-last">Three</lucid-option>
+      </lucid-select>
+    </div>
+
+    <h2>form participation</h2>
+    <form id="form" data-testid="form">
+      <fieldset>
+        <legend>Enabled</legend>
+        <div class="row">
+          <lucid-select
+            label="Plan"
+            name="plan"
+            required
+            data-testid="sel-required"
+          >
+            <lucid-option value="basic">Basic</lucid-option>
+            <lucid-option value="plus" data-testid="opt-plus">Plus</lucid-option>
+          </lucid-select>
+          <lucid-select
+            label="Seats"
+            name="seats"
+            value="5"
+            data-testid="sel-named"
+          >
+            <lucid-option value="1">1</lucid-option>
+            <lucid-option value="5">5</lucid-option>
+            <lucid-option value="10" data-testid="opt-ten">10</lucid-option>
+          </lucid-select>
+        </div>
+      </fieldset>
+      <fieldset disabled>
+        <legend>Disabled by fieldset</legend>
+        <div class="row">
+          <lucid-select
+            label="Add-on"
+            name="addon"
+            data-testid="sel-fieldset-disabled"
+          >
+            <lucid-option value="a">A</lucid-option>
+            <lucid-option value="b">B</lucid-option>
+          </lucid-select>
+        </div>
+      </fieldset>
+    </form>
+  </body>
+</html>

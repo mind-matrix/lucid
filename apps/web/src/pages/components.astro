@@ -22,6 +22,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   <lucid-tabs label="Components" value="button" orientation="vertical">
     <lucid-tab slot="tab" value="button">Button</lucid-tab>
     <lucid-tab slot="tab" value="card">Card</lucid-tab>
+    <lucid-tab slot="tab" value="select">Select</lucid-tab>
     <lucid-tab slot="tab" value="nav">Nav</lucid-tab>
     <lucid-tab slot="tab" value="tabs">Tabs</lucid-tab>
 
@@ -95,6 +96,157 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 </lucid-card>`}</pre>
     </lucid-tab-panel>
 
+    <!-- Select -->
+    <lucid-tab-panel value="select" class={styles.prose}>
+      <h2>Basic</h2>
+      <p>
+        A single-select dropdown following the ARIA select-only combobox
+        pattern. Options are slotted, so they take any inline content.
+      </p>
+      <div class={styles.demoRow}>
+        <lucid-select label="Framework" data-demo="basic">
+          <lucid-option value="astro">Astro</lucid-option>
+          <lucid-option value="react">React</lucid-option>
+          <lucid-option value="svelte">Svelte</lucid-option>
+          <lucid-option value="vue">Vue</lucid-option>
+        </lucid-select>
+      </div>
+
+      <h2>Preselected and custom placeholder</h2>
+      <div class={styles.demoRow}>
+        <lucid-select label="Runtime" value="bun">
+          <lucid-option value="bun">Bun</lucid-option>
+          <lucid-option value="deno">Deno</lucid-option>
+          <lucid-option value="node">Node</lucid-option>
+        </lucid-select>
+        <lucid-select label="Region" placeholder="Choose a region…">
+          <lucid-option value="us-east-1">us-east-1</lucid-option>
+          <lucid-option value="eu-west-1">eu-west-1</lucid-option>
+          <lucid-option value="ap-south-1">ap-south-1</lucid-option>
+        </lucid-select>
+      </div>
+
+      <h2>Disabled option, and disabled select</h2>
+      <div class={styles.demoRow}>
+        <lucid-select label="Tier">
+          <lucid-option value="free">Free</lucid-option>
+          <lucid-option value="pro" disabled>Pro (coming soon)</lucid-option>
+          <lucid-option value="team">Team</lucid-option>
+        </lucid-select>
+        <lucid-select label="Locked" value="one" disabled>
+          <lucid-option value="one">Not editable</lucid-option>
+          <lucid-option value="two">Two</lucid-option>
+        </lucid-select>
+      </div>
+
+      <h2>In a form</h2>
+      <p>
+        Give it a <code>name</code> and it behaves like a native
+        <code>&lt;select&gt;</code>: it submits, shows up in
+        <code>FormData</code>, resets with the form, restores on session
+        restore, and is switched off by an ancestor
+        <code>&lt;fieldset disabled&gt;</code>. Add <code>required</code> and
+        it participates in constraint validation, so submitting an empty one
+        is blocked and the browser shows its own message.
+      </p>
+      <div class={styles.demoBlock}>
+        <form id="plan-form" class={styles.demoRow}>
+          <lucid-select label="Plan" name="plan" required>
+            <lucid-option value="hobby">Hobby</lucid-option>
+            <lucid-option value="pro">Pro</lucid-option>
+            <lucid-option value="enterprise">Enterprise</lucid-option>
+          </lucid-select>
+          <lucid-button variant="primary" data-action="submit">Submit</lucid-button>
+          <lucid-button variant="ghost" data-action="reset">Reset</lucid-button>
+        </form>
+        <output id="plan-result" class={styles.demoOutput}></output>
+      </div>
+      <p>
+        Submit with nothing selected and the browser blocks it and shows its
+        own message. The buttons above call <code>requestSubmit()</code> and
+        <code>reset()</code> explicitly because
+        <code>&lt;lucid-button&gt;</code> is not form-associated yet — its
+        native <code>&lt;button&gt;</code> lives in a shadow root, so
+        <code>type="submit"</code> on it would do nothing.
+      </p>
+      <pre class={styles.proseCode}>{`<form>
+  <lucid-select label="Plan" name="plan" required>
+    <lucid-option value="hobby">Hobby</lucid-option>
+    <lucid-option value="pro">Pro</lucid-option>
+  </lucid-select>
+</form>`}</pre>
+      <pre class={styles.proseCode}>{`const select = document.querySelector("lucid-select");
+
+select.form;               // the owning <form>, or null
+select.willValidate;       // true
+select.validity.valueMissing;
+select.validationMessage;  // "Please select an option."
+select.checkValidity();    // false while empty
+select.reportValidity();   // …and shows the browser's message
+
+// Localise the message — it is internal chrome, so it cannot be slotted.
+select.setAttribute("data-value-missing-message", "Choisissez une option.");`}</pre>
+
+      <h2>Keyboard</h2>
+      <ul>
+        <li>
+          <strong>Closed:</strong> <code>Enter</code>, <code>Space</code>,
+          <code>↑</code>, <code>↓</code> open the listbox.
+          <code>Home</code>/<code>End</code> open and jump to the first/last
+          option. Typing a character opens and jumps to the first match.
+        </li>
+        <li>
+          <strong>Open:</strong> <code>↑</code>/<code>↓</code> move the
+          highlight (wrapping, skipping disabled options),
+          <code>Home</code>/<code>End</code> jump to the ends,
+          <code>Enter</code>/<code>Space</code> commit,
+          <code>Esc</code> closes without changing the value,
+          <code>Tab</code> commits and moves focus on.
+        </li>
+      </ul>
+      <p>
+        Focus stays on the combobox the whole time — options are never
+        focusable. The highlighted option is announced via
+        <code>aria-activedescendant</code>.
+      </p>
+
+      <h2>Reading the value</h2>
+      <pre class={styles.proseCode}>{`<lucid-select label="Framework" value="astro">
+  <lucid-option value="astro">Astro</lucid-option>
+  <lucid-option value="react">React</lucid-option>
+  <lucid-option value="vue" disabled>Vue</lucid-option>
+</lucid-select>`}</pre>
+      <pre class={styles.proseCode}>{`const select = document.querySelector("lucid-select");
+
+// Current value, and the matching <lucid-option> element.
+select.value;            // "astro"
+select.selectedOption;   // <lucid-option value="astro">
+
+// Imperative open/close.
+select.show();
+select.hide();
+select.toggle();
+
+// Fires on every selection change.
+select.addEventListener("lucid-value-change", (e) => {
+  console.log(e.detail.value);
+});`}</pre>
+
+      <h2>Notes</h2>
+      <ul>
+        <li>
+          The popup renders in the top layer via the Popover API so no other 
+          element can clip or bury it. It displays above the trigger when there isn't
+          room below, and shrinks to fit within the screen boundary.
+        </li>
+        <li>
+          <code>lucid-value-change</code> fires for user-driven changes only.
+          Assigning <code>.value</code> in code updates everything but stays
+          silent, matching native <code>&lt;select&gt;</code>.
+        </li>
+      </ul>
+    </lucid-tab-panel>
+
     <!-- Nav -->
     <lucid-tab-panel value="nav" class={styles.prose}>
       <h2>Horizontal</h2>
@@ -161,3 +313,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     </lucid-tab-panel>
   </lucid-tabs>
 </Base>
+
+<script>
+  // Glue for the Select tab's form demo. <lucid-button> is not
+  // form-associated — its native <button> sits inside a shadow root, so
+  // type="submit" would never reach this form — hence the explicit
+  // requestSubmit()/reset() calls.
+  const form = document.getElementById("plan-form");
+  const result = document.getElementById("plan-result");
+
+  if (form instanceof HTMLFormElement && result) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      result.textContent = `Submitted → ${[...new FormData(form)]
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&")}`;
+    });
+
+    form.querySelector('[data-action="submit"]')?.addEventListener("click", () => {
+      // Runs interactive validation, so an empty required select is blocked
+      // and the browser shows its own message.
+      form.requestSubmit();
+    });
+
+    form.querySelector('[data-action="reset"]')?.addEventListener("click", () => {
+      form.reset();
+      result.textContent = "";
+    });
+  }
+</script>

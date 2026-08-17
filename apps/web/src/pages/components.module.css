@@ -52,6 +52,14 @@
   margin-block-end: var(--lucid-space-4);
 }
 
+.demoOutput {
+  display: block;
+  font-family: var(--lucid-font-mono);
+  font-size: var(--lucid-font-size-sm);
+  color: var(--lucid-color-fg-body);
+  min-block-size: 1.4em;
+}
+
 .proseCode {
   display: block;
   font-family: var(--lucid-font-mono);

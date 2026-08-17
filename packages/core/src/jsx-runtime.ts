@@ -91,6 +91,28 @@ function applyAttr(el: Element, key: string, value: unknown): void {
   el.setAttribute(key, String(value));
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+/**
+ * Tags that must be created in the SVG namespace.
+ *
+ * `document.createElement("svg")` yields an HTMLUnknownElement, which does
+ * not render — SVG content requires `createElementNS`. Because JSX
+ * evaluates children before their parent, we cannot detect an `<svg>`
+ * ancestor at creation time, so we key off the tag name instead.
+ *
+ * Deliberately excludes tags that exist in both namespaces — `a`, `title`,
+ * `script`, `style` — which stay in HTML, the far more common intent. Author
+ * those inside SVG via a `ref` if ever needed.
+ */
+const SVG_TAGS = new Set([
+  "svg", "path", "g", "defs", "use", "symbol", "circle", "ellipse", "line",
+  "polygon", "polyline", "rect", "text", "tspan", "textPath", "clipPath",
+  "mask", "pattern", "filter", "marker", "foreignObject", "image", "view",
+  "linearGradient", "radialGradient", "stop", "animate", "animateMotion",
+  "animateTransform", "desc", "metadata", "switch",
+]);
+
 export function jsx(tag: TagOrComponent, props: Props): Node {
   if (tag === Fragment) {
     const frag = document.createDocumentFragment();
@@ -100,7 +122,9 @@ export function jsx(tag: TagOrComponent, props: Props): Node {
 
   if (typeof tag === "function") { return tag(props); }
 
-  const el = document.createElement(tag);
+  const el = SVG_TAGS.has(tag)
+    ? document.createElementNS(SVG_NS, tag)
+    : document.createElement(tag);
 
   for (const key in props) {
     if (key === "children" || key === "ref") { continue; }

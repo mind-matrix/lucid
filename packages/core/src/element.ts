@@ -20,7 +20,15 @@ export abstract class LucidElement extends HTMLElement {
   static shadow: ShadowRootMode | false = "open";
 
   #root: ShadowRoot | this;
-  #renderedNode: Node | null = null;
+  /**
+   * The top-level nodes produced by the last `render()`.
+   *
+   * Tracked as an array because `render()` may return a DocumentFragment
+   * (a JSX `<>…</>` with several children). Appending a fragment moves its
+   * children out and leaves the fragment empty, so the fragment itself is
+   * useless as an update handle — we have to remember the children.
+   */
+  #renderedNodes: Node[] = [];
   #updateScheduled = false;
   #disposers: Array<() => void> = [];
 
@@ -52,11 +60,11 @@ export abstract class LucidElement extends HTMLElement {
   }
 
   connectedCallback(): void {
-    if (!this.#renderedNode) { this.#doRender(); }
+    if (this.#renderedNodes.length === 0) { this.#doRender(); }
   }
 
   requestUpdate(): void {
-    if (this.#updateScheduled || !this.#renderedNode) { return; }
+    if (this.#updateScheduled || this.#renderedNodes.length === 0) { return; }
     this.#updateScheduled = true;
     queueMicrotask(() => {
       this.#updateScheduled = false;
@@ -66,13 +74,30 @@ export abstract class LucidElement extends HTMLElement {
 
   #doRender(): void {
     const next = this.render();
-    if (this.#renderedNode && this.#renderedNode.parentNode === this.#root) {
-      (this.#root as Node).replaceChild(next, this.#renderedNode);
-    } else {
-      this.#root.appendChild(next);
+    // Capture the children BEFORE appending: appending a DocumentFragment
+    // moves its children into the root and empties the fragment.
+    const nextNodes =
+      next instanceof DocumentFragment
+        ? Array.from(next.childNodes)
+        : [next];
+
+    for (const node of this.#renderedNodes) {
+      node.parentNode?.removeChild(node);
     }
-    this.#renderedNode = next;
+    this.#root.appendChild(next);
+    this.#renderedNodes = nextNodes;
+    this.updated();
   }
+
+  /**
+   * Called synchronously after every render, before the next paint.
+   *
+   * `render()` produces a brand-new tree each time, so imperative state
+   * that lives on the *nodes* rather than in markup — top-layer promotion
+   * via `showPopover()`, scroll offsets, measured positions — is discarded
+   * on update and has to be re-applied here. Default is a no-op.
+   */
+  protected updated(): void {}
 
   disconnectedCallback(): void {
     for (const d of this.#disposers) { d(); }

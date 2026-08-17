@@ -52,6 +52,8 @@ Where you place these varies per framework — see "Framework integration" below
 | `<lucid-card>` | Container primitive | `variant` ("outlined" \| "filled" \| "elevated" \| ""), `clickable`, `disabled` |
 | `<lucid-nav>` | Navigation landmark | `orientation` ("horizontal" \| "vertical"), `label` |
 | `<lucid-nav-link>` | Navigation link (renders `<a>`) | `href`, `target`, `rel`, `active`, `disabled` |
+| `<lucid-select>` | Single-select dropdown (ARIA select-only combobox), form-associated | `value`, `placeholder`, `label`, `name`, `required`, `open`, `disabled` |
+| `<lucid-option>` | One option inside a select | `value`, `selected`, `active`, `disabled` |
 | `<lucid-tabs>` | Tablist container | `value`, `orientation`, `activation` ("automatic" \| "manual"), `label` |
 | `<lucid-tab>` | Single tab (goes in `slot="tab"`) | `value`, `selected`, `disabled` |
 | `<lucid-tab-panel>` | Tab content panel (default slot) | `value` |
@@ -97,6 +99,67 @@ Example:
   <lucid-nav-link href="/blog">Blog</lucid-nav-link>
 </lucid-nav>
 ```
+
+### `<lucid-select>` + `<lucid-option>` — usage rules
+
+- Options are slotted light-DOM children. Pair the select's `value` with an
+  option's `value` string.
+- Always set `label` — it becomes the combobox's accessible name. Without it a
+  screen reader announces an unlabelled combobox.
+- `placeholder` shows when `value` is empty (defaults to "Select an option").
+- Read the selection with `select.value`, or `select.selectedOption` for the
+  matching `<lucid-option>` element. Listen for `lucid-value-change` — same
+  event name as `<lucid-tabs>`, detail is `{ value }`. It fires for user
+  changes only; assigning `.value` in code is silent, like native `<select>`.
+- Imperative control: `show()`, `hide()`, `toggle()`.
+- Focus stays on the combobox; options are never focusable. Do NOT add
+  `tabindex` to options.
+- The popup renders in the top layer (Popover API), so it is never clipped by
+  an ancestor's `overflow: hidden` and never buried by a `z-index`. Do NOT
+  add wrapper `z-index` or `position` hacks to "fix" a dropdown — they do
+  nothing.
+
+```html
+<lucid-select label="Framework" value="astro">
+  <lucid-option value="astro">Astro</lucid-option>
+  <lucid-option value="react">React</lucid-option>
+  <lucid-option value="vue" disabled>Vue</lucid-option>
+</lucid-select>
+```
+
+**In forms.** `<lucid-select>` is a form-associated custom element, so with a
+`name` it behaves like a native `<select>`: it submits, appears in
+`FormData`, honours `form.reset()` and session restore, is switched off by an
+ancestor `<fieldset disabled>`, and supports `required` through the
+constraint-validation API.
+
+```html
+<form>
+  <lucid-select label="Plan" name="plan" required>
+    <lucid-option value="hobby">Hobby</lucid-option>
+    <lucid-option value="pro">Pro</lucid-option>
+  </lucid-select>
+</form>
+```
+
+```ts
+select.form;                    // the owning <form>, or null
+select.willValidate;            // true
+select.validity.valueMissing;   // true while empty and required
+select.validationMessage;
+select.checkValidity();
+select.reportValidity();        // …and shows the browser's message
+```
+
+- Localise the "value missing" text with `data-value-missing-message` — it is
+  internal chrome, so it can't come through a slot.
+- `<lucid-button>` is NOT form-associated: its native `<button>` is inside a
+  shadow root, so `type="submit"` does nothing. To submit from a
+  `<lucid-button>`, call `form.requestSubmit()` (or use a plain
+  `<button type="submit">`).
+- The host reflects `data-invalid` once the user has interacted and the
+  constraint still fails — a supplementary cue only. The error *text* comes
+  from the platform's validation message, so don't rely on the border alone.
 
 ### `<lucid-tabs>` family — usage rules
 
@@ -162,7 +225,7 @@ Per-instance override:
 
 Common tokens (there are more — read `tokens.css` when uncertain):
 
-- Colors: `--lucid-color-fg`, `--lucid-color-bg`, `--lucid-color-primary`, `--lucid-color-primary-fg`, `--lucid-color-muted`, `--lucid-color-border`, `--lucid-color-surface-subtle`, `--lucid-color-fg-body`
+- Colors: `--lucid-color-fg`, `--lucid-color-bg`, `--lucid-color-primary`, `--lucid-color-primary-fg`, `--lucid-color-muted`, `--lucid-color-border`, `--lucid-color-danger`, `--lucid-color-surface-subtle`, `--lucid-color-fg-body`
 - Spacing (rem-scale): `--lucid-space-1` through `--lucid-space-20`
 - Radius: `--lucid-radius-sm/md/lg/xl`
 - Font: `--lucid-font-family`, `--lucid-font-size-sm/md/lg/xl`, `--lucid-font-weight-regular/medium/semibold/bold`
@@ -291,7 +354,7 @@ Lucid never touches text or formatting. Rules:
 
 1. **All user-visible text goes through slots.** Never via props (`label="..."`). This lets clients pipe their i18n library's `t("...")` result into the slot with zero library coupling.
 2. **Numbers/dates/currency/plurals are pre-formatted by the client.** Components display strings; they don't call `Intl` internally. Bundle stays microscopic; consumer picks any i18n stack.
-3. **Component-internal chrome (e.g., a modal's ✕ close button) accepts `data-*-label` attributes** for its non-slottable text. Fallback English exists only as a safety net.
+3. **Component-internal chrome accepts `data-*-label` / `data-*-message` attributes** for text that cannot be slotted — a modal's ✕ close button, `<lucid-select>`'s `data-value-missing-message`. Fallback English exists only as a safety net.
 
 Direction: `<html dir="rtl">` mirrors every layout automatically. Never manually invert layouts.
 

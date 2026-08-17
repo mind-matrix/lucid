@@ -19,6 +19,8 @@
   --lucid-color-primary-fg: #ffffff;
   --lucid-color-muted: #64748b;
   --lucid-color-border: #e2e8f0;
+  /* 4.83:1 on --lucid-color-bg, so it is safe for text as well as borders. */
+  --lucid-color-danger: #dc2626;
 
   /* Radius */
   --lucid-radius-sm: 4px;

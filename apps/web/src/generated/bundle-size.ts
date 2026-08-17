@@ -19,7 +19,7 @@ export type BundleSizeReport = {
 };
 
 export const bundleSize: BundleSizeReport = {
-  componentsGzip: { formatted: "4.7 KB", bytes: 4801 },
-  componentsAndRuntimeGzip: { formatted: "8.0 KB", bytes: 8222 },
-  generatedAt: "2026-08-11T07:30:25.451Z",
+  componentsGzip: { formatted: "8.0 KB", bytes: 8167 },
+  componentsAndRuntimeGzip: { formatted: "12 KB", bytes: 12089 },
+  generatedAt: "2026-08-17T21:00:49.694Z",
 };
